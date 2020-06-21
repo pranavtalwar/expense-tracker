@@ -4,6 +4,8 @@ const app: Express = express()
 
 const PORT: number = 5000
 
+app.use(express.json())
+
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World')
 })
