@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const mongodbUrl: string = 'mongodb://localhost:27017/todo-app'
+const mongodbUrl: string = 'mongodb://localhost:27017/expense-tracker'
 
 mongoose.connect(mongodbUrl, 
     { 
