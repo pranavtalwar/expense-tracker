@@ -1,9 +1,9 @@
 import { Document } from 'mongoose'
-import { UserDocument } from './UserInterface'
+import { IUserDocument } from './UserInterfaces'
 
 export interface ExpenseDocument extends Document {
     title: string;
     description: string;
     amount: number; 
-    owner: UserDocument['_id']
+    owner: IUserDocument['_id']
 }  

@@ -1,5 +1,4 @@
-import mongoose, { Schema, Document, Types } from 'mongoose'
-import { UserDocument } from './UserInterface'
+import mongoose, { Schema } from 'mongoose'
 import { ExpenseDocument } from './ExpenseInterface'
 
 const ExpenseSchema: Schema = new Schema({

@@ -2,7 +2,7 @@ import mongoose, { Schema, HookNextFunction } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
-import { UserDocument } from './UserInterface'
+import { IUserDocument, IUser, IUserModel } from './UserInterfaces'
 
 const tokenSchema: Schema = new mongoose.Schema({
     token: {
@@ -56,20 +56,44 @@ const UserSchema: Schema = new mongoose.Schema ({
     timestamps: true
 })
 
-UserSchema.pre<UserDocument>('save', async function (next: HookNextFunction): Promise<void> {
-   const user: UserDocument = this 
+UserSchema.pre<IUserDocument>('save', async function (next: HookNextFunction): Promise<void> {
+   const user: IUserDocument = this 
    user.password = await bcrypt.hash(user.password, 8)
    next()
 })
 
-UserSchema.method('generateToken', async function (this: UserDocument): Promise<string> {
-    const user: UserDocument = this 
+UserSchema.method('generateToken', async function (this: IUserDocument): Promise<string> {
+    const user: IUserDocument = this 
     const token = jwt.sign({ _id: user._id.toString() }, 'secret')
     user.tokens = user.tokens.concat({ token })
-
     await user.save()
 
     return token
 })
 
-export default mongoose.model<UserDocument>('User', UserSchema)
+UserSchema.method('toJSON', function (this: IUserDocument): Object {
+    const user: IUserDocument = this
+    
+    const userObject: Object = user.toObject()
+    delete (userObject as IUserDocument).password
+    delete (userObject as IUserDocument).tokens
+    return userObject
+})
+
+UserSchema.statics.findByCredentials =  async function (email: string, password: string): Promise<IUserDocument> {
+    const user: IUserDocument | null = await User.findOne({ email })
+    if(!user) {
+        throw new Error('Unable to login')
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch) {
+        throw new Error('Unable to login')
+    }
+
+    return user
+} 
+    
+const User : IUserModel = mongoose.model<IUser, IUserModel>('User', UserSchema)
+
+export default User
+
