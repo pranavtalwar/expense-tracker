@@ -1,6 +1,17 @@
-import mongoose, { Schema, Document, HookNextFunction } from 'mongoose'
+import mongoose, { Schema, HookNextFunction } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
+import * as jwt from 'jsonwebtoken'
+import { UserDocument } from './UserInterface'
+
+const tokenSchema: Schema = new mongoose.Schema({
+    token: {
+        type: String,
+        required: true 
+    }
+},{ 
+    _id : false 
+})
 
 const UserSchema: Schema = new mongoose.Schema ({
     firstName: {
@@ -39,24 +50,26 @@ const UserSchema: Schema = new mongoose.Schema ({
     age: {
         type: Number,
         default: 0
-    }
+    },
+    tokens: [tokenSchema]
 }, {
     timestamps: true
 })
 
-UserSchema.pre('save', async function (next: HookNextFunction) {
-   const user: any = this 
+UserSchema.pre<UserDocument>('save', async function (next: HookNextFunction): Promise<void> {
+   const user: UserDocument = this 
    user.password = await bcrypt.hash(user.password, 8)
    next()
 })
 
+UserSchema.method('generateToken', async function (this: UserDocument): Promise<string> {
+    const user: UserDocument = this 
+    const token = jwt.sign({ _id: user._id.toString() }, 'secret')
+    user.tokens = user.tokens.concat({ token })
 
-export interface IUser extends Document {
-    firstName: string;
-    lastName: string;
-    email: string; 
-    password: string,
-    age: number 
-}   
+    await user.save()
 
-export default mongoose.model<IUser>('User', UserSchema)
+    return token
+})
+
+export default mongoose.model<UserDocument>('User', UserSchema)

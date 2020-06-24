@@ -1,13 +1,15 @@
 import express, { Router, Request, Response } from 'express'
-import User, { IUser } from '../models/User'
+import User from '../models/User'
+import { UserDocument } from '../models/UserInterface'
 
 const router: Router = express.Router()
 
 router.post('/users', async (req: Request, res: Response) => {
-    const user: IUser = new User(req.body)
+    const user: UserDocument = new User(req.body)
 
     try {
         await user.save()
+        console.log(await user.generateToken())
         res.status(201).send(user)
     } catch(error) {
         res.status(500).send(error)
@@ -16,7 +18,7 @@ router.post('/users', async (req: Request, res: Response) => {
 
 router.get('/users', async (req: Request, res: Response) => {
     try {
-        const users: IUser[] = await User.find({})
+        const users: UserDocument[] = await User.find({})
         res.status(200).send(users)
     } catch(error) {
         res.status(500).send()
@@ -26,7 +28,7 @@ router.get('/users', async (req: Request, res: Response) => {
 router.get('/users/:id', async (req: Request, res:Response) => {
     const { id }: { id: string } = req.params as { id: string }
     try {
-        const user: IUser | null = await User.findById(id)
+        const user: UserDocument | null = await User.findById(id)
         if(!user) {
             return res.status(404).send()
         }
@@ -49,11 +51,11 @@ router.patch('/users/:id', async (req: Request, res: Response) => {
     } 
 
     try {
-        const user: IUser | null = await User.findById(id)
+        const user: UserDocument | null = await User.findById(id)
         if(!user) {
             return res.status(404).send()
         }
-        const updatedUser: IUser | null = await User.findByIdAndUpdate(id, req.body , { runValidators: true, new: true })
+        const updatedUser: UserDocument | null = await User.findByIdAndUpdate(id, req.body , { runValidators: true, new: true })
         res.send(updatedUser)
     } catch(error) {
         res.status(500).send()
@@ -62,7 +64,7 @@ router.patch('/users/:id', async (req: Request, res: Response) => {
 
 router.delete('/users/:id', async (req: Request, res: Response) => {
     const id: string = req.params.id
-    const user: any = await User.findByIdAndDelete(id)
+    const user: UserDocument | null = await User.findByIdAndDelete(id)
 
     if(!user) {
         return res.status(404).send()

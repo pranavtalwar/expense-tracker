@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Types } from 'mongoose'
-import { IUser } from './User'
+import { UserDocument } from './UserInterface'
+import { ExpenseDocument } from './ExpenseInterface'
 
 const ExpenseSchema: Schema = new Schema({
     title: {
@@ -25,11 +26,4 @@ const ExpenseSchema: Schema = new Schema({
     timestamps: true
 })
 
-export interface IExpense extends Document {
-    title: string;
-    description: string;
-    amount: number; 
-    owner: IUser['_id']
-}  
-
-export default mongoose.model<IExpense>('Expense', ExpenseSchema)
+export default mongoose.model<ExpenseDocument>('Expense', ExpenseSchema)

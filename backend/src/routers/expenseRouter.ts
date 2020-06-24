@@ -1,11 +1,11 @@
 import express, { Router, Request, Response} from 'express'
-import Expense, { IExpense } from '../models/Expense'
-import { createSecretKey } from 'crypto'
+import Expense from '../models/Expense'
+import { ExpenseDocument } from '../models/ExpenseInterface'
 
 const router: Router = express.Router()
 
 router.post('/expenses', async (req: Request, res: Response) => {
-    const expense: IExpense = new Expense(req.body)
+    const expense: ExpenseDocument = new Expense(req.body)
 
     try {
         await expense.save()
@@ -17,7 +17,7 @@ router.post('/expenses', async (req: Request, res: Response) => {
 
 router.get('/expenses', async (req: Request, res: Response) => {
     try {
-        const expenses: IExpense[] = await Expense.find({})
+        const expenses: ExpenseDocument[] = await Expense.find({})
         res.send(expenses)
     } catch(error) {
         res.status(500).send()
@@ -27,7 +27,7 @@ router.get('/expenses', async (req: Request, res: Response) => {
 router.get('/expenses/:id', async (req: Request, res: Response) => {
     const { id }: { id : string } = req.params as { id: string }
     try {
-        const expense: IExpense | null = await Expense.findById(id)
+        const expense: ExpenseDocument | null = await Expense.findById(id)
         if(!expense) {
             return res.status(404).send()
         }
@@ -48,11 +48,11 @@ router.patch('/expenses/:id', async (req: Request, res: Response) => {
     }
      
     try {
-        const expense: IExpense | null = await Expense.findById(id)
+        const expense: ExpenseDocument | null = await Expense.findById(id)
         if(!expense) {
             return res.status(404).send()
         }
-        const updatedExpense: IExpense | null = await Expense.findByIdAndUpdate(id, req.body , { runValidators: true, new: true })
+        const updatedExpense: ExpenseDocument | null = await Expense.findByIdAndUpdate(id, req.body , { runValidators: true, new: true })
         res.send(updatedExpense)
     } catch(error) {
         res.status(500).send()
@@ -63,7 +63,7 @@ router.delete('/expenses/:id', async (req: Request, res: Response) => {
     const { id }: { id : string } = req.params as { id: string }
 
     try {
-        const expense: IExpense | null = await Expense.findByIdAndDelete(id)
+        const expense: ExpenseDocument | null = await Expense.findByIdAndDelete(id)
         if(!expense) {
             return res.status(404).send()
         }
