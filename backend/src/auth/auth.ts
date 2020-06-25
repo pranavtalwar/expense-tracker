@@ -31,9 +31,6 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     } catch(error) {
         res.status(401).send({ error: 'Please authenticate'})
     }
-    
-    
-    next()
 }
 
 export default auth 

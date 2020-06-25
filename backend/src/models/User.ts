@@ -79,6 +79,8 @@ UserSchema.method('toJSON', function (this: IUserDocument): Object {
     const userObject: Object = user.toObject()
     delete (userObject as IUserDocument).password
     delete (userObject as IUserDocument).tokens
+    delete (userObject as IUserDocument).__v
+    delete (userObject as IUserDocument)._id
     return userObject
 })
 
