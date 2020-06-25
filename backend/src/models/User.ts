@@ -3,6 +3,7 @@ import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
 import { IUserDocument, IUser, IUserModel } from './UserInterfaces'
+import Expense from './Expense'
 
 const tokenSchema: Schema = new mongoose.Schema({
     token: {
@@ -56,13 +57,26 @@ const UserSchema: Schema = new mongoose.Schema ({
     timestamps: true
 })
 
+UserSchema.virtual('expenses', {
+    ref: 'Expense',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
 UserSchema.pre<IUserDocument>('save', async function (next: HookNextFunction): Promise<void> {
    const user: IUserDocument = this 
    if(user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, 8)
+        user.password = await bcrypt.hash(user.password, 8)
    }
    next()
 })
+
+UserSchema.pre<IUserDocument>('remove', async function (next: HookNextFunction): Promise<void> {
+    const user: IUserDocument = this 
+    const owner = user._id
+    await Expense.deleteMany({ owner })
+    next()
+ })
 
 UserSchema.method('generateToken', async function (this: IUserDocument): Promise<string> {
     const user: IUserDocument = this 

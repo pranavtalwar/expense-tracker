@@ -1,7 +1,7 @@
 import { Document } from 'mongoose'
 import { IUserDocument } from './UserInterfaces'
 
-export interface ExpenseDocument extends Document {
+export interface IExpenseDocument extends Document {
     title: string;
     description: string;
     amount: number; 

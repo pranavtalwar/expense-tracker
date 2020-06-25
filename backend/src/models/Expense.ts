@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { ExpenseDocument } from './ExpenseInterface'
+import { IExpenseDocument } from './ExpenseInterface'
 
 const ExpenseSchema: Schema = new Schema({
     title: {
@@ -25,4 +25,12 @@ const ExpenseSchema: Schema = new Schema({
     timestamps: true
 })
 
-export default mongoose.model<ExpenseDocument>('Expense', ExpenseSchema)
+ExpenseSchema.method('toJSON', function (this: IExpenseDocument): Object {
+    const user: IExpenseDocument = this
+    
+    const expenseObject: Object = user.toObject()
+    delete (expenseObject as IExpenseDocument).__v
+    return expenseObject
+})
+
+export default mongoose.model<IExpenseDocument>('Expense', ExpenseSchema)
