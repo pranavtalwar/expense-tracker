@@ -1,8 +1,11 @@
 import React from 'react';
+import LoginPage from './components/LoginPage'
+import RegistractionPage from './components/RegistrationPage'
 
 const App: React.FC = () => (
   <div>
-      <p>Setup Project</p>
+      <RegistractionPage />
+      <LoginPage />
   </div>
 )
 
