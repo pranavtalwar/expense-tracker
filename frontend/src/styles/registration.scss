@@ -28,6 +28,16 @@ $theme-color: #4ba0b5;
     margin: 10px 0;
 }
 
+.registration-container select {
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: .5px solid $theme-color;
+    box-sizing: border-box; 
+    padding: 10px;
+    margin: 10px 0;
+}
+
 .registration-container input:focus {
     outline: none;
 }

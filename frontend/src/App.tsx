@@ -1,11 +1,10 @@
 import React from 'react';
 import LoginPage from './components/LoginPage'
-import RegistractionPage from './components/RegistrationPage'
+import RegistrationPage from './components/RegistrationPage'
 
 const App: React.FC = () => (
   <div>
-      <RegistractionPage />
-      <LoginPage />
+      <RegistrationPage />
   </div>
 )
 
