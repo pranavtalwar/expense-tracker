@@ -1,10 +1,9 @@
-import React from 'react';
-import LoginPage from './components/LoginPage'
-import RegistrationPage from './components/RegistrationPage'
+import React from 'react'
+import AppRouter from './router/AppRouter'
 
 const App: React.FC = () => (
   <div>
-      <RegistrationPage />
+    <AppRouter />
   </div>
 )
 
