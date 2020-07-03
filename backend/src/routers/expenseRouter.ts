@@ -47,7 +47,7 @@ router.get('/expenses/:id', auth, async (req: Request, res: Response) => {
 router.patch('/expenses/:id', auth, async (req: Request, res: Response) => {
     // checking for valid updates
     const updates: string[] = Object.keys(req.body)
-    const allowedUpdates: string[] = ['amount','description','title']
+    const allowedUpdates: string[] = ['amount','description','title', 'createdAt']
     const isAllowed: boolean = updates.every((update: string) => allowedUpdates.includes(update)) 
     
     if(!isAllowed) {

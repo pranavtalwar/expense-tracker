@@ -15,6 +15,10 @@ const ExpenseSchema: Schema = new Schema({
         type: Number,
         required: true
     },
+    createdAt: {
+        type: String,
+        required: true
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
