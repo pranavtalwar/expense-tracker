@@ -10,6 +10,12 @@ const filterReducerDefaultState: Filter = {
 const filterReducer = (state: Filter = filterReducerDefaultState, action: FilterAction): Filter => {
     switch(action.type) {
         case 'SET_TEXT_FILTER':
+            if(action.text === '') {
+                return {
+                    ...state,
+                    text: ''
+                }
+            }
             if(action.text) {
                 return {
                     ...state,

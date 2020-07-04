@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import '../styles/login.scss'
 
-const Header = () => (
+const Header: React.FC = () => (
     <header>
         <h1>Expense Tracker</h1>
         <NavLink to="/" exact={true} activeClassName="is-active">Dashboard</NavLink>

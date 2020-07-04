@@ -14,11 +14,11 @@ const AppRouter: React.FC = () => (
     <div>
         <BrowserRouter>
             <div>
-                {/* {<Header />} */}
+                <Header />
                 <Switch>
-                    <Route path="/" component={Login} exact={true}/>
-                    <Route path="/registration" component={Registration}/>
-                    <Route path="/dashoboard" component={ExpenseDashboard}/>
+                    {/* <Route path="/" component={Login} exact={true}/>
+                    <Route path="/registration" component={Registration}/> */}
+                    <Route exact={true} path="/" component={ExpenseDashboard}/>
                     <Route path="/create" component={AddExpense}/>
                     <Route path="/edit/:id" component={EditExpense}/>
                     <Route path="/help" component={HelpPage}/>
