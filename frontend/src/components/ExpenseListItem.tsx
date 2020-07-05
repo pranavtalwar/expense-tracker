@@ -1,10 +1,11 @@
-import React, { Dispatch } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import { Moment } from 'moment'
 
 interface Props {
     title: string,
     amount: number
-    createdAt: number
+    createdAt: Moment
     id: string
 }
 

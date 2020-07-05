@@ -1,8 +1,11 @@
-import React, { Dispatch } from 'react'
+import React, { Dispatch, useState } from 'react'
+import moment, { Moment } from 'moment'
 import { connect } from 'react-redux'
-import { setTextFilter, sortByAmount, sortByDate } from '../actions/Filter'
+import { DateRangePicker } from 'react-dates'
+import { setTextFilter, sortByAmount, sortByDate, setStartDate, setEndDate } from '../actions/Filter'
 import { Filter } from '../reduxTypes/FilterTypes'
 import { ReduxState } from '../reduxTypes/reduxStateType'
+import { start } from 'repl'
 
 interface StateProps {
     filter: Filter
@@ -12,30 +15,55 @@ interface Props extends StateProps {
     dispatch: Dispatch<any> 
 }
 
-const ExpenseListFilters: React.FC<Props> = ({dispatch, filter }: Props) => (
-    <div>
-        <input 
-            type="text" 
-            value={filter.text}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {  
-                dispatch(setTextFilter(e.target.value))
-            }}
-        />
-        <select
-            value={filter.sortBy}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => {
-                if(e.target.value === 'amount') {
-                    dispatch(sortByAmount())
-                } else if (e.target.value === 'date') {
-                    dispatch(sortByDate())
-                }
-            }}
-        >
-            <option value="date">Date</option>
-            <option value="amount">Amount</option>
-        </select>
-    </div>
-) 
+const ExpenseListFilters: React.FC<Props> = ({dispatch, filter }: Props) => {
+    const [calendarFocused, setCalendarFocused] = useState<"startDate" | "endDate" | null>(null)
+
+    const onDatesChange = ({ startDate, endDate }: { startDate: Moment | null , endDate: Moment | null }) => {
+        dispatch(setStartDate(startDate))
+        dispatch(setEndDate(endDate))
+    }
+
+    const onFocusChange = (calendarFocused: "startDate" | "endDate" | null): void => {
+        setCalendarFocused(calendarFocused)
+    }
+
+    return (
+        <div>
+            <input 
+                type="text" 
+                value={filter.text}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {  
+                    dispatch(setTextFilter(e.target.value))
+                }}
+            />
+            <select
+                value={filter.sortBy}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>): void => {
+                    if(e.target.value === 'amount') {
+                        dispatch(sortByAmount())
+                    } else if (e.target.value === 'date') {
+                        dispatch(sortByDate())
+                    }
+                }}
+            >
+                <option value="date">Date</option>
+                <option value="amount">Amount</option>
+            </select>
+            <DateRangePicker
+                startDateId="startDateID"
+                endDateId="endDateiD"
+                startDate={filter.startDate}
+                endDate={filter.endDate}
+                onDatesChange={onDatesChange}
+                focusedInput={calendarFocused}
+                onFocusChange={onFocusChange}
+                numberOfMonths={1}
+                isOutsideRange={() => false}
+                showClearDates={true}
+            />
+        </div>
+    ) 
+}
 
 const mapStateToProps = (state: ReduxState): StateProps => {
     return {

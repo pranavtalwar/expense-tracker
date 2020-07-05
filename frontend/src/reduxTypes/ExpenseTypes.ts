@@ -1,18 +1,20 @@
+import { Moment } from "moment";
+
 export interface Expense {
     id: string
     title: string
     description: string
     amount: number
-    createdAt: number,
+    createdAt: Moment,
 }
 
 export interface ExpenseCreation extends Omit<Expense, 'id'> {}
 
 export interface ExpenseUpdates {
-    title?: string
-    description?: string
-    amount?: number
-    createdAt?: number
+    title: string
+    description: string
+    amount: number
+    createdAt: Moment
 }
 
 export interface ExpenseAction {

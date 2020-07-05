@@ -1,10 +1,11 @@
+import moment from 'moment'
 import { Filter, FilterAction } from '../reduxTypes/FilterTypes'
 
 const filterReducerDefaultState: Filter = {
     text: '',
     sortBy: 'date',
-    startDate: undefined,
-    endDate: undefined
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf('month')
 }
 
 const filterReducer = (state: Filter = filterReducerDefaultState, action: FilterAction): Filter => {
@@ -33,19 +34,28 @@ const filterReducer = (state: Filter = filterReducerDefaultState, action: Filter
                 sortBy: 'date'
             }
         case 'SET_START_DATE':
-            return {
-                ...state,
-                startDate: action.startDate
-            }
-        case 'SET_START_DATE':
-            return {
-                ...state,
-                startDate: action.startDate
+            if(action.startDate) {
+                return {
+                    ...state,
+                    startDate: action.startDate
+                }
+            } else {
+                return {
+                    ...state,
+                    startDate: null
+                }
             }
         case 'SET_END_DATE':
-            return {
-                ...state,
-                endDate: action.endDate
+            if(action.endDate) {
+                return {
+                    ...state,
+                    endDate: action.endDate
+                }
+            } else {
+                return {
+                    ...state,
+                    endDate: null
+                }
             }
         default:
             return state

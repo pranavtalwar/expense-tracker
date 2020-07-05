@@ -5,6 +5,7 @@ import {
     SetStartDateAction, 
     SetEndDateAction 
 } from "../reduxTypes/FilterTypes"
+import { Moment } from "moment"
 
 export const setTextFilter = (text: string): SetTextFilterAction => ({
     type: 'SET_TEXT_FILTER',
@@ -19,12 +20,12 @@ export const sortByDate = (): SortByDateAction => ({
     type: 'SORT_BY_DATE'
 })
 
-export const setStartDate = (startDate: number): SetStartDateAction => ({
+export const setStartDate = (startDate: Moment | null): SetStartDateAction => ({
     type: 'SET_START_DATE',
     startDate
 })
 
-export const setEndDate = (endDate: number): SetEndDateAction => ({
+export const setEndDate = (endDate: Moment | null): SetEndDateAction => ({
     type: 'SET_END_DATE',
     endDate
 })

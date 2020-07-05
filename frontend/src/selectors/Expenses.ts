@@ -3,18 +3,9 @@ import { Filter } from "../reduxTypes/FilterTypes";
 
 const getVisibleExpenses = (expenses: Expense[], filter: Filter): Expense[] => {
     const filteredExpenses: Expense[] = expenses.filter((expense: Expense) => {
-        let startDateMatch: boolean = true
-        let endDateMatch: boolean = true 
-        let textMatch: boolean = true 
-        if(typeof filter.startDate === 'number') {
-            startDateMatch = expense.createdAt >= filter.startDate
-        }
-        if(typeof filter.endDate === 'number') {
-            endDateMatch = expense.createdAt <= filter.endDate
-        }
-        if(typeof filter.text === 'string') {
-            textMatch = expense.title.toLowerCase().includes(filter.text.toLowerCase())
-        }
+        let startDateMatch: boolean = filter.startDate ?  filter.startDate.isSameOrBefore(expense.createdAt, 'day') : true
+        let endDateMatch: boolean = filter.endDate ? filter.endDate.isSameOrAfter(expense.createdAt, 'day') : true  
+        let textMatch: boolean = expense.title.toLowerCase().includes(filter.text.toLowerCase())
         return startDateMatch && endDateMatch && textMatch
     })
 

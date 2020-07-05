@@ -1,15 +1,17 @@
+import { Moment } from "moment";
+
 export interface Filter {
     text: string
     sortBy: string,
-    startDate: undefined | number
-    endDate: undefined | number
+    startDate: Moment | null
+    endDate: Moment | null
 }
 
 export interface FilterAction { 
     type: string
-    text?: string,
-    startDate?: number,
-    endDate?: number
+    text?: string
+    startDate?: Moment | null
+    endDate?: Moment | null
 }
 
 export interface SetTextFilterAction {
@@ -27,10 +29,10 @@ export interface SortByDateAction {
 
 export interface SetStartDateAction {
     type: string
-    startDate: number
+    startDate: Moment | null
 }
 
 export interface SetEndDateAction {
     type: string
-    endDate: number
+    endDate: Moment | null
 }
