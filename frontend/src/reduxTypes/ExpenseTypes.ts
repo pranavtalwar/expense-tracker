@@ -6,6 +6,8 @@ export interface Expense {
     createdAt: number,
 }
 
+export interface ExpenseCreation extends Omit<Expense, 'id'> {}
+
 export interface ExpenseUpdates {
     title?: string
     description?: string

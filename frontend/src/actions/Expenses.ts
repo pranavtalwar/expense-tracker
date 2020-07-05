@@ -2,11 +2,11 @@ import { v4 as uuid } from 'uuid';
 import { AddExpenseAction, RemoveExpenseAction, UpdateExpenseAction, ExpenseUpdates } from '../reduxTypes/ExpenseTypes';
 
 export const addExpense = ({
-    title = '',
+    title,
     description = '',
-    amount = 0,
-    createdAt = 0
-} = {}): AddExpenseAction => ({
+    amount, 
+    createdAt
+}: { title: string, description?: string, amount: number, createdAt: number }): AddExpenseAction => ({
     type: 'ADD_EXPENSE',
     expense: {
         id: uuid(),
