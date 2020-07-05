@@ -53,7 +53,7 @@ const ExpenseListFilters: React.FC<Props> = ({dispatch, filter }: Props) => {
                 startDateId="startDateID"
                 endDateId="endDateiD"
                 startDate={filter.startDate}
-                endDate={filter.endDate}
+                endDate={filter.endDate }
                 onDatesChange={onDatesChange}
                 focusedInput={calendarFocused}
                 onFocusChange={onFocusChange}
