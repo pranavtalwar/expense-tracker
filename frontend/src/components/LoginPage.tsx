@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState, Dispatch } from 'react'
+import { connect } from 'react-redux'
 import '../styles/login.scss'
+import { startLogin } from '../actions/Auth'
+import ErrorText from './ErrorText'
+import { ReduxState } from '../reduxTypes/reduxStateType' 
 
-const url = 'http://localhost:5000/login'
+interface StateProps {
+    error: string | undefined
+}
 
-const LoginPage : React.FC = () => {
+interface DispatchProps {
+    startLogin: (email: string, password: string) => void
+}
+
+interface Props extends StateProps, DispatchProps {}
+
+
+const LoginPage : React.FC<Props> = ({ startLogin, error }) => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault()
         if(email !== '' && password !== '') {
-            let response
-            try {
-                response = await axios.post(url, {
-                    email,
-                    password
-                })
-                console.log(response)
-            } catch(error) {
-                console.log(response)
-                console.log(error)
-            }
-    
-            
+          startLogin(email, password)      
         }
     }
 
@@ -49,6 +49,7 @@ const LoginPage : React.FC = () => {
                         required={true}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     /> 
+                    <ErrorText error={error} />
                     <button type="submit">Login</button>
                 </form>
            </div>
@@ -57,4 +58,12 @@ const LoginPage : React.FC = () => {
     )
 }
 
-export default LoginPage
+const mapStateToProps = (state: ReduxState): StateProps => ({
+    error: state.auth.error
+})
+
+const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
+    startLogin: (email: string, password: string) => dispatch(startLogin({ email, password }))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

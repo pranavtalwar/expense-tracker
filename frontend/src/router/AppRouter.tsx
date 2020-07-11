@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
+import createHistory from 'history/createBrowserHistory'
 import Login from '../components/LoginPage'
 import Registration from '../components/RegistrationPage'
 import Header from '../components/Header'
@@ -9,23 +10,24 @@ import ExpenseDashboard from '../components/ExpenseDashboard'
 import HelpPage from '../components/HelpPage'
 import NotFoundPage from '../components/NotFoundPage'
 
+export const history = createHistory()
 
 const AppRouter: React.FC = () => (
     <div>
-        <BrowserRouter>
+        <Router history={history}>
             <div>
                 <Header />
                 <Switch>
-                    {/* <Route path="/" component={Login} exact={true}/>
-                    <Route path="/registration" component={Registration}/> */}
-                    <Route exact={true} path="/" component={ExpenseDashboard}/>
+                    <Route path="/" component={Login} exact={true}/>
+                    <Route path="/registration" component={Registration}/>
+                    <Route path="/dashboard" component={ExpenseDashboard}/>
                     <Route path="/create" component={AddExpense}/>
                     <Route path="/edit/:id" component={EditExpense}/>
                     <Route path="/help" component={HelpPage}/>
                     <Route component={NotFoundPage}/>
                 </Switch>
             </div>
-        </BrowserRouter>
+        </Router>
     </div>
 )
 

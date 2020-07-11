@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState, Dispatch } from 'react'
+import { connect } from 'react-redux'
 import '../styles/registration.scss'
+import { UserRegistration } from '../reduxTypes/AuthTypes'
+import { ReduxState } from '../reduxTypes/reduxStateType'
+import { startRegistration } from '../actions/Auth'
+import ErrorText from './ErrorText'
 
 interface RegistractionForm {
     firstName: string,
@@ -8,46 +12,46 @@ interface RegistractionForm {
     email: string,
     passwordOne: string,
     passwordTwo: string,
-    age?: number | undefined
+    age?: string
 }
 
-interface RegistrationPostData {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    age?: number
+interface StateProps {
+    error: string | undefined
 }
 
-const url = 'http://localhost:5000/signup'
+interface DispatchProps {
+    startRegistration: (userData: UserRegistration) => void
+}
 
-const RegistrationPage: React.FC = () => {
+interface Props extends DispatchProps, StateProps {}
+
+const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
     const [data, setData] = useState<RegistractionForm>({
         firstName: '',
         lastName: '',
         email: '',
         passwordOne: '',
         passwordTwo: '',
-        age: undefined
+        age: ''
     })
 
     const validation = (data: RegistractionForm): boolean => {
         if (data.passwordOne === data.passwordTwo) {
             return true
         }
-        alert('Passwords dont match')
+        alert('Passwords don\'t match!')
         return false 
     }
 
-    const createRegistratonPostData = (data:RegistractionForm): RegistrationPostData => {
-        const registrationPostData: RegistrationPostData = {
+    const createRegistratonPostData = (data:RegistractionForm): UserRegistration => {
+        const registrationPostData: UserRegistration = {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
             password: data.passwordOne,
         }
-        if(data.age !== undefined) {
-            registrationPostData.age = data.age
+        if(data.age !== undefined && data.age !== null) {
+            registrationPostData.age = parseInt(data.age)
         }
         
         return registrationPostData
@@ -57,19 +61,19 @@ const RegistrationPage: React.FC = () => {
         setData({ ...data, [e.target.name]: e.target.value}) 
     }
 
+    const onAgeChange =  (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const age: string = e.target.value
+        if(!age || age.match(/^(100|[0-9]|[1-9][0-9])$/)) {
+            setData({ ...data, age: age })
+        }
+        
+    }
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault()
         if(validation(data)) {
-            
-            let response
-            try {
-                response = await axios.post(url, createRegistratonPostData(data))
-                console.log(response)
-            } catch(error) {
-                console.log(response)
-                console.log(error)
-            }
+            startRegistration(createRegistratonPostData(data))
         }
+
     }
 
     return (
@@ -108,6 +112,7 @@ const RegistrationPage: React.FC = () => {
                         value={data.passwordOne}
                         required={true}
                         onChange={onChange}
+                        minLength={6}
                     />
                     <input
                         type="password"
@@ -116,14 +121,16 @@ const RegistrationPage: React.FC = () => {
                         value={data.passwordTwo}
                         required={true}
                         onChange={onChange}
+                        minLength={6}
                     />
                     <input
-                        type="number"
+                        type="text"
                         placeholder="Age"
                         name="age"
                         value={data.age}
-                        onChange={onChange}
+                        onChange={onAgeChange}
                     />
+                    <ErrorText error={error}/>
                     <button>Submit</button>
                 </form>
             </div>
@@ -131,4 +138,12 @@ const RegistrationPage: React.FC = () => {
     )
 }
 
-export default RegistrationPage
+const mapStateToProps = (state: ReduxState): StateProps => ({
+    error: state.auth.error
+})
+
+const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
+    startRegistration: (userData: UserRegistration) => dispatch(startRegistration(userData))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage)
