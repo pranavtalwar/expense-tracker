@@ -15,7 +15,7 @@ router.post('/signup', async (req: Request, res: Response) => {
         res.status(201).send({ user, token })
     } catch(error) {
         if(error.code === 11000) {
-             res.send({ error: 'User exists' })
+            return res.send({ error: 'User exists' })
         }
         res.status(500).send(error)
     }
