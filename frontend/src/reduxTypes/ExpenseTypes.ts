@@ -1,14 +1,14 @@
 import { Moment } from "moment";
 
 export interface Expense {
-    id: string
+    _id: string
     title: string
     description: string
     amount: number
     createdAt: Moment,
 }
 
-export interface ExpenseCreation extends Omit<Expense, 'id'> {}
+export interface ExpenseCreation extends Omit<Expense, '_id'> {}
 
 export interface ExpenseUpdates {
     title: string
@@ -19,9 +19,10 @@ export interface ExpenseUpdates {
 
 export interface ExpenseAction {
     type: string
-    id?: string
+    _id?: string
     expense?: Expense
     updates?: ExpenseUpdates
+    expenses?: Expense[]
 }
 
 export interface AddExpenseAction {
@@ -31,11 +32,16 @@ export interface AddExpenseAction {
 
 export interface UpdateExpenseAction {
     type: string
-    id: string
+    _id: string
     updates: ExpenseUpdates
 }
 
 export interface RemoveExpenseAction {
     type: string
-    id: String
+    _id: String
+}
+
+export interface SetExpensesAction {
+    type: string
+    expenses: Expense[]
 }

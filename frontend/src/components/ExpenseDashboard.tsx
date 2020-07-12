@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
+import { connect } from 'react-redux'
 import ExpenseList from './ExpenseList'
 import ExpenseListFilters from './ExpenseListFilters'
+import { startSetExpenses } from '../actions/Expenses'
 
 const ExpenseDashboard: React.FC = () => (
     <div>
@@ -8,5 +10,7 @@ const ExpenseDashboard: React.FC = () => (
         <ExpenseList />
     </div>
 )
+
+
 
 export default ExpenseDashboard

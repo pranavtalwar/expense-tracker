@@ -1,31 +1,53 @@
-import React from 'react'
+import React, { useEffect, Dispatch } from 'react'
 import { connect } from 'react-redux'
 import { Expense } from '../reduxTypes/ExpenseTypes'
 import { ReduxState } from '../reduxTypes/reduxStateType'
+import { startSetExpenses } from '../actions/Expenses'
 import ExpenseListItem from './ExpenseListItem'
 import selectExpenses from '../selectors/Expenses'
 
-interface Props {
+interface StateProps {
     expenses: Expense[]
 }
 
-const ExpenseList: React.FC<Props> = (props: Props) => (
-    <div>
-        <h1>Expense List</h1>
-        {props.expenses.map((expense: Expense) => {
-            return <ExpenseListItem 
-                        key={expense.id}
-                        {...expense}
-                    />
-        })}
-    </div>
-)
+interface DispatchProps {
+    startSetExpenses: () => void
+}
 
-const mapStateToProps = (state: ReduxState) => {
+interface Props extends StateProps, DispatchProps {
+    startSetExpenses: () => void
+}
+
+const ExpenseList: React.FC<Props> = ({ expenses, startSetExpenses }) => {
+
+    useEffect(() => {
+        startSetExpenses()
+    }, [])
+
+    return (
+        <div>
+            <h1>Expense List</h1>
+            {expenses.length > 0 ? expenses.map((expense: Expense) => {
+                return <ExpenseListItem 
+                            key={expense._id}
+                            {...expense}
+                        />
+            }):
+            <p>Tum chutiye ho</p>
+            }
+        </div>
+    )
+}
+
+const mapStateToProps = (state: ReduxState): StateProps => {
     return {
         expenses: selectExpenses(state.expenses, state.filters)
     }
 }
 
-export default connect(mapStateToProps)(ExpenseList)
+const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
+    startSetExpenses: () => dispatch(startSetExpenses())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList)
 

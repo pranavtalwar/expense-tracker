@@ -5,8 +5,6 @@ import App from './App';
 import configureStore from './store/configureStore';
 import 'normalize.css/normalize.css';
 import './index.scss'
-import { addExpense } from './actions/Expenses';
-import { setTextFilter } from './actions/Filter';
 
 const store = configureStore()
 
@@ -17,3 +15,5 @@ const jsx = (
 )
 
 ReactDOM.render(jsx, document.getElementById('root'));
+
+

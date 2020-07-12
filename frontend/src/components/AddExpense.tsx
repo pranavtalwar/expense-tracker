@@ -2,23 +2,29 @@ import React, { Dispatch } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
-import { Expense, ExpenseCreation } from '../reduxTypes/ExpenseTypes'
-import { addExpense } from '../actions/Expenses'
+import { ExpenseCreation } from '../reduxTypes/ExpenseTypes'
+import { startAddExpense } from '../actions/Expenses'
 
-interface Props extends RouteComponentProps {
-    dispatch: Dispatch<any>
+interface DispatchProps {
+    startAddExpense: (expense: ExpenseCreation) => void
 }
 
-const AddExpense: React.FC<Props> = ({ dispatch, history }: Props) => (
+interface Props extends RouteComponentProps, DispatchProps {}
+
+const AddExpense: React.FC<Props> = ({ startAddExpense, history }: Props) => (
     <div>
         <h1>Add Expense</h1>
         <ExpenseForm 
             onSubmit={(expense: ExpenseCreation) => {
-                dispatch(addExpense(expense))
-                history.push('/')
+                startAddExpense(expense)
+                history.push('/dashboard')
             }}
         />
     </div>
 )
 
-export default connect()(AddExpense)
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    startAddExpense: (expense: ExpenseCreation) => dispatch(startAddExpense(expense))
+})
+
+export default connect(undefined, mapDispatchToProps)(AddExpense)

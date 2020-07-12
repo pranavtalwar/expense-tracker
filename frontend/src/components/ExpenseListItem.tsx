@@ -6,16 +6,19 @@ interface Props {
     title: string,
     amount: number
     createdAt: Moment
-    id: string
+    _id: string
 }
 
-const ExpenseListItem:React.FC<Props> = ({ id, title, amount, createdAt }: Props) => (     
-    <div>
-        <Link to={`/edit/${id}`}>
-            <h3>{title}</h3>
-        </Link>
-        <p>{amount} - {createdAt}</p>
-    </div>
-)
+const ExpenseListItem:React.FC<Props> = ({ _id, title, amount, createdAt }: Props) => {
+    const id: string  = _id
+    return (     
+            <div>
+                <Link to={`/edit/${id}`}>
+                    <h3>{title}</h3>
+                </Link>
+                <p>{amount} - {createdAt}</p>
+            </div>
+    ) 
+}
 
 export default ExpenseListItem

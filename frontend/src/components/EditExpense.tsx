@@ -2,32 +2,40 @@ import React, { Dispatch } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ReduxState } from '../reduxTypes/reduxStateType'
-import { Expense, ExpenseCreation } from '../reduxTypes/ExpenseTypes'
+import { Expense, ExpenseCreation, ExpenseUpdates } from '../reduxTypes/ExpenseTypes'
 import ExpenseForm from './ExpenseForm'
-import { editExpense, removeExpense } from '../actions/Expenses'
+import { startEditExpense , startRemoveExpense } from '../actions/Expenses'
 
 interface MatchParams {
     id: string
 }
 
-interface Props extends RouteComponentProps<MatchParams>, StateProps {
-    dispatch: Dispatch<any>
+interface StateProps {
+    expense: Expense | undefined
 }
 
-const EditExpense: React.FC<Props> = ({ expense, dispatch, match, history }: Props) => {
+interface DispatchProps {
+    startEditExpense: (_id: string, updates: ExpenseUpdates) => void
+    startRemoveExpense: (_id: string) => void
+}
+
+interface Props extends RouteComponentProps<MatchParams>, StateProps, DispatchProps {}
+
+const EditExpense: React.FC<Props> = ({ expense, startEditExpense, startRemoveExpense, match, history }: Props) => {
+    const { id }: { id: string } = match.params
     return (
         <div>
             <ExpenseForm 
                 expense={expense}
                 onSubmit={(expense: ExpenseCreation) => {
-                    dispatch(editExpense(match.params.id, expense))
-                    history.push('/')
+                    startEditExpense(id, expense)
+                    history.push('/dashboard')
                 }}
             />
             <button
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    dispatch(removeExpense({ id: String(expense?.id) }))
-                    history.push('/')
+                    startRemoveExpense(id)
+                    history.push('/dashboard')
                 }}
             >   
                 Remove
@@ -36,14 +44,16 @@ const EditExpense: React.FC<Props> = ({ expense, dispatch, match, history }: Pro
     )
 }
 
-interface StateProps {
-    expense: Expense | undefined
-}
 
 const mapStateToProps = (state: ReduxState, props: Props): StateProps => {
     return {
-        expense: state.expenses.find((expense: Expense) =>  expense.id === props.match.params.id)
+        expense: state.expenses.find((expense: Expense) =>  expense._id === props.match.params.id)
     }
 }
 
-export default connect(mapStateToProps)(EditExpense)
+const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
+    startEditExpense: (_id: string, updates: ExpenseUpdates) => dispatch(startEditExpense(_id, updates)),
+    startRemoveExpense: (_id: string) => dispatch(startRemoveExpense(_id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditExpense)
