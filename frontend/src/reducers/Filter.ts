@@ -57,6 +57,8 @@ const filterReducer = (state: Filter = filterReducerDefaultState, action: Filter
                     endDate: null
                 }
             }
+        case 'LOGOUT':
+            return filterReducerDefaultState
         default:
             return state
     }

@@ -2,7 +2,7 @@ import { Auth, AuthAction, User } from "../reduxTypes/AuthTypes"
 
 const authReducerDefaultState: Auth = {
     token: localStorage.getItem('token') || undefined,
-    isAuthenticated: undefined,
+    isAuthenticated: false,
     user: null,
     error: undefined,
 }
@@ -19,7 +19,35 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
                     user: (action.user as User),
                     error: undefined,
                 }
-            }  
+            }
+        case 'LOGOUT':
+            localStorage.removeItem('token')
+            return {
+                ...state,
+                token: undefined,
+                isAuthenticated: false,
+                user: null,
+                error: undefined
+            }   
+        case 'USER_LOAD_SUCCESS':
+            if(action.user) {
+                return {
+                    ...state,
+                    token: action.token,
+                    isAuthenticated: true,
+                    user: action.user,
+                    error: undefined
+                }
+            }
+        case 'USER_LOAD_FAILURE':
+            localStorage.removeItem('token')
+            return {
+                ...state,
+                token: undefined,
+                isAuthenticated: false,
+                user: null,
+                error: undefined
+            }
         case 'REGISTRATION_SUCCESS':
             if(action.token) {
                 localStorage.setItem('token', action.token)
@@ -45,7 +73,6 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
             
         case 'REGISTRATION_FAILURE':
             localStorage.removeItem('token')
-            console.log('error')
             if(action.error) {
                 return {
                     ...state,

@@ -3,6 +3,7 @@ import { history } from '../router/AppRouter'
 import { Dispatch } from "react"
 import axios from "axios"
 import { url } from '../constants'
+import { authHeader } from '../utils/AuthHeader'
 
 interface LoginResponse extends Response {
     data: {
@@ -41,6 +42,50 @@ export const startLogin = ({ email, password }: {email: string, password: string
             dispatch(loginFailure('Invalid credentials'))
         }
 }
+
+const logout = ():LoginAction => ({
+    type: 'LOGOUT'
+})
+
+export const startLogout = () =>
+    async (dispatch: Dispatch<any>): Promise<void> => {
+        const response: Response = await axios.post(`${url}/logout`, null ,authHeader)
+        if(response.status === 200) {
+            dispatch(logout())
+            history.push('/')
+        }
+    }
+
+interface UserResponse extends Response {
+    data: {
+        age: number,
+        firstName: string,
+        lastName: string,
+        email: string
+    }
+}
+
+const userLoadSuccess = (user: User, token: string) => ({
+    type: 'USER_LOAD_SUCCESS',
+    user,
+    token
+})
+
+const userLoadFailure = () => ({
+    type: 'USER_LOAD_FAILURE'
+})
+
+export const startUserLoad = (token: string) =>
+    async (dispatch: Dispatch<any>): Promise<void> => {
+        try {
+            const response: UserResponse  = await axios.get(`${url}/users/me`, authHeader)
+            const user: User = response.data
+            console.log(response)
+            dispatch(userLoadSuccess(user, token))
+        } catch(error) {
+            dispatch(userLoadFailure())
+        }
+    }
 
 const registrationSuccess =  (token: string, user: User): RegistrationAction => ({
     type: 'REGISTRATION_SUCCESS',

@@ -4,9 +4,11 @@ import '../styles/login.scss'
 import { startLogin } from '../actions/Auth'
 import ErrorText from './ErrorText'
 import { ReduxState } from '../reduxTypes/reduxStateType' 
+import { Redirect } from 'react-router-dom'
 
 interface StateProps {
     error: string | undefined
+    isAuthenticated: boolean
 }
 
 interface DispatchProps {
@@ -16,7 +18,7 @@ interface DispatchProps {
 interface Props extends StateProps, DispatchProps {}
 
 
-const LoginPage : React.FC<Props> = ({ startLogin, error }) => {
+const LoginPage : React.FC<Props> = ({ startLogin, error, isAuthenticated }) => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
@@ -25,6 +27,10 @@ const LoginPage : React.FC<Props> = ({ startLogin, error }) => {
         if(email !== '' && password !== '') {
           startLogin(email, password)      
         }
+    }
+
+    if(isAuthenticated) {
+        return <Redirect to="/dashboard"/>
     }
 
     return (
@@ -59,7 +65,8 @@ const LoginPage : React.FC<Props> = ({ startLogin, error }) => {
 }
 
 const mapStateToProps = (state: ReduxState): StateProps => ({
-    error: state.auth.error
+    error: state.auth.error,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({

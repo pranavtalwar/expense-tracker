@@ -46,6 +46,7 @@ const EditExpense: React.FC<Props> = ({ expense, startEditExpense, startRemoveEx
 
 
 const mapStateToProps = (state: ReduxState, props: Props): StateProps => {
+    console.log('running')
     return {
         expense: state.expenses.find((expense: Expense) =>  expense._id === props.match.params.id)
     }

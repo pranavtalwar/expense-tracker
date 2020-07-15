@@ -25,8 +25,6 @@ const ExpenseSchema: Schema = new Schema({
         ref: 'User'
     }
 
-}, {
-    timestamps: true
 })
 
 ExpenseSchema.method('toJSON', function (this: IExpenseDocument): Object {
@@ -34,6 +32,7 @@ ExpenseSchema.method('toJSON', function (this: IExpenseDocument): Object {
     
     const expenseObject: Object = user.toObject()
     delete (expenseObject as IExpenseDocument).__v
+    delete (expenseObject as IExpenseDocument).owner
     return expenseObject
 })
 

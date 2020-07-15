@@ -13,6 +13,7 @@ type tokenInterface = Object & {
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {  
         const token: string | undefined= req.headers.authorization?.replace('Bearer ', '')
+        console.log(token)
         let decodedToken: any
         if(typeof token === 'string') {
             decodedToken = jwt.verify(token, 'secret')

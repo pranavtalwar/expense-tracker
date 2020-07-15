@@ -27,7 +27,9 @@ const expenseReducer = (state: Expense[] = expenseReducerDefaultState, action: E
         case 'SET_EXPENSES':
             if(action.expenses) {
                 return [...action.expenses]
-            }  
+            } 
+        case 'LOGOUT':
+            return expenseReducerDefaultState
         default:
             return state
     }

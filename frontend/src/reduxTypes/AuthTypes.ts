@@ -1,6 +1,6 @@
 export interface Auth {
     token: string | undefined
-    isAuthenticated: boolean | undefined
+    isAuthenticated: boolean
     user: User | null
     error: string | undefined
 }
