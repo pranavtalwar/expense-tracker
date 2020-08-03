@@ -38,7 +38,6 @@ const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error
     })
 
     if(isAuthenticated && history.location.pathname === '/') {
-        console.log('inside already authed')
         return <Redirect to="/dashboard"/>
     }
 

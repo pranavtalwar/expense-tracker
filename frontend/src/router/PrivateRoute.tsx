@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import { ReduxState } from '../reduxTypes/reduxStateType'
+import Header from  '../components/Header'
 
 interface StateProps {
     isAuthenticated: boolean 
@@ -14,10 +15,13 @@ interface Props extends StateProps {
 
 export const PrivateRoute: React.FC<Props> = ({ isAuthenticated, component: Component, path, ...rest }) => (
     <Route {...rest} component={(props: any) => {
-        console.log(isAuthenticated)
         return (
             isAuthenticated ? (
-                <Component {...props}/>
+                <div>
+                    <Header />
+                    <Component {...props}/>
+                </div>
+               
             ) : (
                 
                 <Redirect to="/" />

@@ -33,7 +33,7 @@ const ExpenseList: React.FC<Props> = ({ expenses, startSetExpenses }) => {
                             {...expense}
                         />
             }):
-            <p>Loading...</p>
+            <p>No items</p>
             }
         </div>
     )
