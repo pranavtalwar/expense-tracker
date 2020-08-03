@@ -1,8 +1,7 @@
 import React, { Dispatch } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { startLogout } from '../actions/Auth'
-import '../styles/login.scss'
 
 interface DispatchProps {
     startLogout: () => void
@@ -11,11 +10,15 @@ interface DispatchProps {
 interface Props extends DispatchProps {}
 
 const Header: React.FC<Props> = ({ startLogout }) => (
-    <header>
-        <h1>Expense Tracker</h1>
-        <NavLink to="/dashboard" activeClassName="is-active">Dashboard</NavLink>
-        <NavLink to="/create" activeClassName="is-active">Create Expense</NavLink>
-        <button onClick={startLogout}>Logout</button>
+    <header className="header"> 
+        <div className="content-container">
+            <div className="header-content">
+                <Link className="header-title" to="/dashboard">
+                    <h1>Expense Tracker</h1>
+                </Link>
+                <button className="button button-link" onClick={startLogout}>Logout</button>
+            </div>
+        </div>
     </header>
 )
 

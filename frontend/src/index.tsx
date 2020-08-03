@@ -5,7 +5,7 @@ import App from './App';
 import configureStore from './store/configureStore';
 import { startUserLoad } from './actions/Auth';
 import 'normalize.css/normalize.css';
-import './index.scss'
+import './styles/styles.scss'
 
 
 export const store = configureStore()

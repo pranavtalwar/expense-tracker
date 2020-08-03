@@ -1,6 +1,5 @@
 import React, { useState, Dispatch, useEffect } from 'react'
 import { connect } from 'react-redux'
-import '../styles/login.scss'
 import { startLogin, startUserLoad } from '../actions/Auth'
 import ErrorText from './ErrorText'
 import { ReduxState } from '../reduxTypes/reduxStateType' 

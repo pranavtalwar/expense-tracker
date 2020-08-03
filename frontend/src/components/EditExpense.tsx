@@ -25,21 +25,31 @@ const EditExpense: React.FC<Props> = ({ expense, startEditExpense, startRemoveEx
     const { id }: { id: string } = match.params
     return (
         <div>
-            <ExpenseForm 
-                expense={expense}
-                onSubmit={(expense: ExpenseCreation) => {
-                    startEditExpense(id, expense)
-                    history.push('/dashboard')
-                }}
-            />
-            <button
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    startRemoveExpense(id)
-                    history.push('/dashboard')
-                }}
-            >   
-                Remove
-            </button>
+            <div className="page-header">
+                <div className="content-container">
+                    <h1 className="page-header-title">Edit Expense</h1>
+                </div>
+            </div>
+            <div className="content-container">
+                <ExpenseForm 
+                    expense={expense}
+                    onSubmit={(expense: ExpenseCreation) => {
+                        startEditExpense(id, expense)
+                        history.push('/dashboard')
+                    }}
+                />
+                <button
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        startRemoveExpense(id)
+                        history.push('/dashboard')
+                    }}
+                    className="button button-secondary"
+                >   
+                    Remove Expense
+                </button>
+            </div>
+               
+            
         </div>
     )
 }

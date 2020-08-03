@@ -1,6 +1,5 @@
 import React, { useState, Dispatch } from 'react'
 import { connect } from 'react-redux'
-import '../styles/registration.scss'
 import { UserRegistration } from '../reduxTypes/AuthTypes'
 import { ReduxState } from '../reduxTypes/reduxStateType'
 import { startRegistration } from '../actions/Auth'

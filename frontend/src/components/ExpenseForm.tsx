@@ -63,42 +63,50 @@ const ExpenseForm: React.FC<Props> = (props) => {
     }
 
     return (
-        <div>
-            <form onSubmit={onSubmit}>
-                {error && <p>{error}</p>}
-                <input
-                    type="text"
-                    placeholder="Title"
-                    name="title"
-                    value={data.title}
-                    autoFocus
-                    onChange={onChange}
-                />
-                <input
-                    type="text"
-                    placeholder="Amount"
-                    name="amount"
-                    value={data.amount}
-                    onChange={onAmountChange}
-                />
-                <SingleDatePicker 
-                    id="date-picker"
-                    date={data.createdAt}
-                    onDateChange={onDateChange}
-                    focused={calendarFocused}
-                    onFocusChange={onFocusChange}
-                    numberOfMonths={1}
-                    isOutsideRange={() => false}
-                />
-                <textarea
-                    placeholder="Please add a description for your expense (optional)"
-                    name="description"
-                    value={data.description}
-                    onChange={onChange}
-                />   
-                <button>Add Expense</button>
-            </form>
-        </div>
+        <form 
+            className="form"
+            onSubmit={onSubmit}
+        >
+            {error && <p className="form-error">{error}</p>}
+            <input
+                className="text-input"
+                type="text"
+                placeholder="Title"
+                name="title"
+                value={data.title}
+                autoFocus
+                onChange={onChange}
+            />
+            <input
+                className="text-input"
+                type="text"
+                placeholder="Amount"
+                name="amount"
+                value={data.amount}
+                onChange={onAmountChange}
+            />
+            <SingleDatePicker 
+                id="date-picker"
+                date={data.createdAt}
+                onDateChange={onDateChange}
+                focused={calendarFocused}
+                onFocusChange={onFocusChange}
+                numberOfMonths={1}
+                isOutsideRange={() => false}
+            />
+            <textarea
+                placeholder="Please add a description for your expense (optional)"
+                name="description"
+                className="textarea"
+                value={data.description}
+                onChange={onChange}
+            />
+            <div>
+                <button className="button">Save Expense</button>
+            </div>
+                
+        </form>
+
     )
 }
 
