@@ -3,7 +3,7 @@ import { AddExpenseAction, RemoveExpenseAction, UpdateExpenseAction, ExpenseUpda
 import { Moment } from 'moment';
 import { Dispatch } from 'react';
 import { url } from '../constants'
-import { authHeader } from '../utils/AuthHeader'
+import  getAuthHeader from '../utils/AuthHeader'
 import axios from 'axios';
 
 interface ExpenseResponse extends Response {
@@ -30,7 +30,8 @@ const addExpense = ({
 export const startAddExpense = (expense: ExpenseCreation) => 
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            const response: ExpenseResponse = await axios.post(`${url}/expenses`, expense, authHeader) 
+
+            const response: ExpenseResponse = await axios.post(`${url}/expenses`, expense, getAuthHeader()) 
             const { data }: { data: Expense } = response
             dispatch(addExpense(data))
         } catch(error) { }
@@ -47,7 +48,7 @@ const removeExpense = ({ _id }: { _id: string }): RemoveExpenseAction => ({
 export const startRemoveExpense = (_id: string) => 
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            const response: ExpenseResponse = await axios.delete(`${url}/expenses/${_id}`, authHeader)
+            const response: ExpenseResponse = await axios.delete(`${url}/expenses/${_id}`, getAuthHeader())
             if(response.status == 200) {
                 dispatch(removeExpense({ _id }))
             }
@@ -67,7 +68,7 @@ const editExpense = (_id: string, updates: ExpenseUpdates): UpdateExpenseAction 
 export const startEditExpense = (_id: string, updates: ExpenseUpdates) =>
     async (dispatch: Dispatch<any>) => {
         try {
-            const response: ExpenseResponse = await axios.patch(`${url}/expenses/${_id}`, updates, authHeader)
+            const response: ExpenseResponse = await axios.patch(`${url}/expenses/${_id}`, updates, getAuthHeader())
             const { data }: { data: Expense } = response 
             dispatch(editExpense(_id, data))
 
@@ -86,11 +87,11 @@ const setExpenses = (expenses: Expense[]): SetExpensesAction => ({
 export const startSetExpenses = () =>
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            const response: SetExpenseResponse = await axios.get(`${url}/expenses`, authHeader)
+            const response: SetExpenseResponse = await axios.get(`${url}/expenses`, getAuthHeader())
             const expenses: Expense[] = response.data
             dispatch(setExpenses(expenses))
         } catch(error) {
-           
+            // dispatch()
         }
 
     }

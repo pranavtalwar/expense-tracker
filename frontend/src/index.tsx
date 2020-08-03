@@ -10,12 +10,12 @@ import { startUserLoad } from './actions/Auth';
 export const store = configureStore()
 
 const Application:React.FC = () => {
-    useEffect(() => {
-        const token: string | null = localStorage.getItem('token')
-        if(token) {
-            store.dispatch(startUserLoad(token))
-        }
-    })
+    // useEffect(() => {
+    //     const token: string | null = localStorage.getItem('token')
+    //     if(token) {
+    //         store.dispatch(startUserLoad(token))
+    //     }
+    // })
 
     return (
         <Provider store={store}>

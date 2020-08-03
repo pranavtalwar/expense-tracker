@@ -13,13 +13,17 @@ interface Props extends StateProps {
 }
 
 export const PrivateRoute: React.FC<Props> = ({ isAuthenticated, component: Component, path, ...rest }) => (
-    <Route {...rest} component={(props: any) => (
-        isAuthenticated ? (
-            <Component {...props}/>
-        ) : (
-            <Redirect to="/" />
+    <Route {...rest} component={(props: any) => {
+        console.log(isAuthenticated)
+        return (
+            isAuthenticated ? (
+                <Component {...props}/>
+            ) : (
+                
+                <Redirect to="/" />
+            )
         )
-    )} />
+    }} />
 )
 
 const mapStateToProps = (state:ReduxState): StateProps => ({

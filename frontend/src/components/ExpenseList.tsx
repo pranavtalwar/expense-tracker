@@ -22,7 +22,7 @@ const ExpenseList: React.FC<Props> = ({ expenses, startSetExpenses }) => {
 
     useEffect(() => {
         startSetExpenses()
-    }, [])
+    }, [expenses.length, startSetExpenses])
 
     return (
         <div>
@@ -33,7 +33,7 @@ const ExpenseList: React.FC<Props> = ({ expenses, startSetExpenses }) => {
                             {...expense}
                         />
             }):
-            <p>Tum chutiye ho</p>
+            <p>Loading...</p>
             }
         </div>
     )

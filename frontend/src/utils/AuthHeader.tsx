@@ -4,8 +4,10 @@ interface AuthHeader {
     }
 }
 
-export const authHeader: AuthHeader = {
-    headers: {
-        authorization: `Bearer ${localStorage.getItem('token')}`
+export default (): AuthHeader => {
+    return {
+        headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`
+        }
     }
 }

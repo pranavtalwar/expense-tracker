@@ -3,7 +3,7 @@ import { history } from '../router/AppRouter'
 import { Dispatch } from "react"
 import axios from "axios"
 import { url } from '../constants'
-import { authHeader } from '../utils/AuthHeader'
+import getAuthHeader from '../utils/AuthHeader'
 
 interface LoginResponse extends Response {
     data: {
@@ -49,7 +49,7 @@ const logout = ():LoginAction => ({
 
 export const startLogout = () =>
     async (dispatch: Dispatch<any>): Promise<void> => {
-        const response: Response = await axios.post(`${url}/logout`, null ,authHeader)
+        const response: Response = await axios.post(`${url}/logout`, null ,getAuthHeader())
         if(response.status === 200) {
             dispatch(logout())
             history.push('/')
@@ -78,9 +78,8 @@ const userLoadFailure = () => ({
 export const startUserLoad = (token: string) =>
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            const response: UserResponse  = await axios.get(`${url}/users/me`, authHeader)
+            const response: UserResponse  = await axios.get(`${url}/users/me`, getAuthHeader())
             const user: User = response.data
-            console.log(response)
             dispatch(userLoadSuccess(user, token))
         } catch(error) {
             dispatch(userLoadFailure())
@@ -123,5 +122,3 @@ export const startRegistration = ({ email, password, firstName, lastName, age }:
             }
         }
     }
-
-

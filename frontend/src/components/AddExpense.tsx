@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react'
+import React, { Dispatch, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
@@ -11,17 +11,28 @@ interface DispatchProps {
 
 interface Props extends RouteComponentProps, DispatchProps {}
 
-const AddExpense: React.FC<Props> = ({ startAddExpense, history }: Props) => (
-    <div>
-        <h1>Add Expense</h1>
-        <ExpenseForm 
-            onSubmit={(expense: ExpenseCreation) => {
-                startAddExpense(expense)
-                history.push('/dashboard')
-            }}
-        />
-    </div>
-)
+const AddExpense: React.FC<Props> = ({ startAddExpense, history }: Props) => {
+    if (window.performance) {
+        if (performance.navigation.type == 1) {
+          alert( "This page is reloaded" );
+        } else {
+          alert( "This page is not reloaded");
+        }
+      }
+      
+    return (
+        <div>
+            <h1>Add Expense</h1>
+            <ExpenseForm 
+                onSubmit={(expense: ExpenseCreation) => {
+                    startAddExpense(expense)
+                    console.log('this ran')
+                    history.push('/dashboard')
+                }}
+            />
+        </div>
+    )
+}
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     startAddExpense: (expense: ExpenseCreation) => dispatch(startAddExpense(expense))

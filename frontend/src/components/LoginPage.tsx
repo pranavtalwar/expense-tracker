@@ -1,10 +1,10 @@
-import React, { useState, Dispatch } from 'react'
+import React, { useState, Dispatch, useEffect } from 'react'
 import { connect } from 'react-redux'
 import '../styles/login.scss'
-import { startLogin } from '../actions/Auth'
+import { startLogin, startUserLoad } from '../actions/Auth'
 import ErrorText from './ErrorText'
 import { ReduxState } from '../reduxTypes/reduxStateType' 
-import { Redirect } from 'react-router-dom'
+import { Redirect, RouteComponentProps } from 'react-router-dom'
 
 interface StateProps {
     error: string | undefined
@@ -13,12 +13,13 @@ interface StateProps {
 
 interface DispatchProps {
     startLogin: (email: string, password: string) => void
+    startUserLoad: (token: string) => void
 }
 
-interface Props extends StateProps, DispatchProps {}
+interface Props extends StateProps, DispatchProps, RouteComponentProps<any> {}
 
 
-const LoginPage : React.FC<Props> = ({ startLogin, error, isAuthenticated }) => {
+const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error, isAuthenticated }) => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
@@ -29,7 +30,15 @@ const LoginPage : React.FC<Props> = ({ startLogin, error, isAuthenticated }) => 
         }
     }
 
-    if(isAuthenticated) {
+    useEffect(() => {
+        const token: string | null = localStorage.getItem('token')
+        if(token && isAuthenticated === false) {
+            startUserLoad(token)
+        }
+    })
+
+    if(isAuthenticated && history.location.pathname === '/') {
+        console.log('inside already authed')
         return <Redirect to="/dashboard"/>
     }
 
@@ -70,7 +79,8 @@ const mapStateToProps = (state: ReduxState): StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
-    startLogin: (email: string, password: string) => dispatch(startLogin({ email, password }))
+    startLogin: (email: string, password: string) => dispatch(startLogin({ email, password })),
+    startUserLoad: (token: string ) => dispatch(startUserLoad(token))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
