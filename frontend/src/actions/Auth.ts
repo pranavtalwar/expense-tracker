@@ -86,10 +86,8 @@ export const startUserLoad = (token: string) =>
         }
     }
 
-const registrationSuccess =  (token: string, user: User): RegistrationAction => ({
-    type: 'REGISTRATION_SUCCESS',
-    user,
-    token
+const registrationSuccess =  (): RegistrationAction => ({
+    type: 'REGISTRATION_SUCCESS'
 })
 
 const registrationFailure = (error: string | undefined ): RegistrationAction => ({
@@ -104,16 +102,15 @@ interface UserRegistration extends User {
 export const startRegistration = ({ email, password, firstName, lastName, age }: UserRegistration) => 
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            const response: LoginResponse = await axios.post(`${url}/signup`, {
+            await axios.post(`${url}/signup`, {
                 email,
                 password,
                 firstName,
                 lastName,
                 age
             })
-            const { user, token } = response.data
-            dispatch(registrationSuccess(token, user))
-            history.push('/dashboard')
+            dispatch(registrationSuccess())
+            history.push('/registration-step-one')
         } catch(error) {
             if(error.response.status === 403) {   
                 dispatch(registrationFailure('User already exists!'))

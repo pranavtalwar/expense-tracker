@@ -49,16 +49,7 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
                 error: undefined
             }
         case 'REGISTRATION_SUCCESS':
-            if(action.token) {
-                localStorage.setItem('token', action.token)
-                return {
-                    ...state,
-                    token: action.token,
-                    isAuthenticated: true,
-                    user: (action.user as User),
-                    error: undefined,
-                }
-            }
+            return {...state}
         case 'LOGIN_FAILURE':
             localStorage.removeItem('token')
             if(action.error) {
@@ -70,9 +61,7 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
                     error: action.error
                 }   
             }
-            
         case 'REGISTRATION_FAILURE':
-            localStorage.removeItem('token')
             if(action.error) {
                 return {
                     ...state,

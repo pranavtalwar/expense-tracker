@@ -32,7 +32,5 @@ export interface LoginAction {
 
 export interface RegistrationAction {
     type: string
-    token?: string
-    user?: User
     error?: string
 }

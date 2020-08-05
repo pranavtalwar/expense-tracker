@@ -69,3 +69,11 @@ $theme-color: #4ba0b5;
     outline: 4px solid $theme-color;
 }
 
+.registration-message {
+    padding-top: $s-size;
+    font-size: $m-size;
+}
+
+.registration-back-link {
+    color: $theme-color;
+}
