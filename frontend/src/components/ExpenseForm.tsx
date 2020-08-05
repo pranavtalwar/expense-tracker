@@ -56,7 +56,7 @@ const ExpenseForm: React.FC<Props> = (props) => {
             props.onSubmit({
                 title: data.title,
                 description: data.description,
-                amount: parseInt(data.amount, 10) * 100,
+                amount: parseFloat(data.amount) * 100,
                 createdAt: data.createdAt?.valueOf()
             })
         }
