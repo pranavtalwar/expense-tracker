@@ -19,7 +19,7 @@ router.post('/signup', async (req: Request, res: Response) => {
         const tokenBody: Object = req.body
         const token: string =  jwt.sign(tokenBody, process.env.JWT_SECRET as string, { expiresIn: '20m' })
         accountActivationEmail(email, token)
-        res.status(200).send('Acount Activation Link sent')
+        res.status(200).send()
     } catch(error) {
         if(error.message === 'User exists') {
             return res.status(403).send()
@@ -33,12 +33,15 @@ router.post('/activation', async (req: Request, res: Response) => {
     try {
         if(token) {
             const decodedUser: IUserDocument = jwt.verify(token, process.env.JWT_SECRET as string) as IUserDocument
+            const user: IUser | null = await User.findOne({ email: decodedUser.email })
+            if(user) {
+                return res.status(403).send()
+            }
             await new User(decodedUser).save()
             welcomeEmail(decodedUser.email, decodedUser.firstName)
             return res.status(201).send()
         }
     } catch(error) {
-        console.log()
         return res.status(400).send(error)
     }
     
