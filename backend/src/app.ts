@@ -9,10 +9,10 @@ const app: Express = express()
 
 app.use(express.json())
 app.use(cors())
-app.use((req: Request, res: Response, next: NextFunction): void => {
-    console.log(req.method, req.path, req.body)
-    next()
-})
+// app.use((req: Request, res: Response, next: NextFunction): void => {
+//     console.log(req.method, req.path, req.body)
+//     next()
+// })
 app.use(userRouter)
 app.use(expenseRouter)
 

@@ -1,24 +1,47 @@
-import express, { Router, Request, Response, RequestHandler } from 'express'
+import express, { Router, Request, Response } from 'express'
+import * as jwt from 'jsonwebtoken'
 import User from '../models/User'
 import { IUserDocument, IUser, IUserModel } from '../models/UserInterfaces'
 import auth from '../auth/auth'
+import { accountActivationEmail, welcomeEmail } from '../utils/sendEmail'
 
 const router: Router = express.Router()
 
 // route for signing up a new user
 router.post('/signup', async (req: Request, res: Response) => {
-    const user: IUser = new User(req.body)
-
+    const { email } : { email: string} = req.body
     try {
-        await user.save()
-        const token = await user.generateToken()
-        res.status(201).send({ user, token })
+
+        const checkUser: IUserDocument | null = await User.findOne({ email })
+        if(checkUser) {
+            throw new Error('User exists')
+        }
+        const tokenBody: Object = req.body
+        const token: string =  jwt.sign(tokenBody, process.env.JWT_SECRET as string, { expiresIn: '20m' })
+        accountActivationEmail(email, token)
+        res.status(200).send('Acount Activation Link sent')
     } catch(error) {
-        if(error.code === 11000) {
+        if(error.message === 'User exists') {
             return res.status(403).send()
         }
         res.status(500).send(error)
     }
+})
+
+router.post('/activation', async (req: Request, res: Response) => {
+    const { token }: { token: string} = req.body
+    try {
+        if(token) {
+            const decodedUser: IUserDocument = jwt.verify(token, process.env.JWT_SECRET as string) as IUserDocument
+            await new User(decodedUser).save()
+            welcomeEmail(decodedUser.email, decodedUser.firstName)
+            return res.status(201).send()
+        }
+    } catch(error) {
+        console.log()
+        return res.status(400).send(error)
+    }
+    
 })
 
 // route for logging in 
