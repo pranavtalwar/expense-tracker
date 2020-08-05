@@ -1,14 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import * as jwt from 'jsonwebtoken'
-// import  } from 'jsonwebtoken'
 import User from '../models/User'
 import { IUserDocument } from '../models/UserInterfaces'
-import { decode } from 'punycode'
-
-type tokenInterface = Object & {
-    _id: string
-}
-
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {  

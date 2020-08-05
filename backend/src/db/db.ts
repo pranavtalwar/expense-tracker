@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
-
-const mongodbUrl: string = 'mongodb://localhost:27017/expense-tracker'
+const mongodbUrl: string = process.env.MONGODB_URL as string
 
 mongoose.connect(mongodbUrl, 
     { 

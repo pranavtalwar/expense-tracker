@@ -1,4 +1,5 @@
-import express, { Express, Request, Response } from 'express'
+import express, { Express, Request, Response, NextFunction } from 'express'
+import cors from 'cors'
 import './db/db'
 import userRouter from './routers/userRouter'
 import expenseRouter from './routers/expenseRouter'
@@ -7,8 +8,9 @@ import expenseRouter from './routers/expenseRouter'
 const app: Express = express()
 
 app.use(express.json())
-app.use((req, res, next) => {
-    console.log(req.method, req.path)
+app.use(cors())
+app.use((req: Request, res: Response, next: NextFunction): void => {
+    console.log(req.method, req.path, req.body)
     next()
 })
 app.use(userRouter)

@@ -1,0 +1,71 @@
+$theme-color: #4ba0b5;
+
+.registration-page {
+    align-items: center;
+    background: url('/images/bg.jpg');
+    background-size: cover;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    width: 100vw;
+}
+
+.registration-container {
+    background: fade-out(white, .15);
+    border-radius: 4px;
+    text-align: center;
+    padding: 3.2rem 1.6rem;
+    width: 30rem;
+}
+
+.registration-container input {
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: .5px solid $theme-color;
+    box-sizing: border-box; 
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.registration-container select {
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: .5px solid $theme-color;
+    box-sizing: border-box; 
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.registration-container input:focus {
+    outline: none;
+}
+
+.registration-container h1 {
+    margin: 0 0 1.6rem 0;
+    line-height: 1;
+}
+
+.registration-container h3 {
+    margin: 0 0 1.6rem 0;
+    line-height: 1;
+}
+
+.registration-container button {
+    margin-top: 20px;
+    border: none;
+    background-color: $theme-color;
+    color: white;
+    padding: 10px 30px;
+    font-size: $l-size;
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+.registration-container button:hover {
+    background-color: white;
+    color:  $theme-color;
+    outline: 4px solid $theme-color;
+}
+

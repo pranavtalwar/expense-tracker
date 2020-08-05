@@ -15,14 +15,16 @@ const ExpenseSchema: Schema = new Schema({
         type: Number,
         required: true
     },
+    createdAt: {
+        type: Number,
+        required: true
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
     }
 
-}, {
-    timestamps: true
 })
 
 ExpenseSchema.method('toJSON', function (this: IExpenseDocument): Object {
@@ -30,6 +32,7 @@ ExpenseSchema.method('toJSON', function (this: IExpenseDocument): Object {
     
     const expenseObject: Object = user.toObject()
     delete (expenseObject as IExpenseDocument).__v
+    delete (expenseObject as IExpenseDocument).owner
     return expenseObject
 })
 

@@ -1,0 +1,33 @@
+.page-header {
+    background-color: $off-white;
+    padding: $l-size 0;
+    margin-bottom: $l-size;
+}
+
+.page-header-actions {
+    margin-top: $m-size;
+}
+
+.page-header-title {
+    font-weight: 300;
+    margin: 0;
+    span {
+        font-weight: bold;
+    }
+}
+
+.button {
+    background-color: $theme-color;
+    border: none;
+    color: white;
+    display: inline-block;
+    font-size: $font-size-large;
+    font-weight: 300;
+    line-height: 1;
+    padding: $s-size;
+    text-decoration: none;
+}
+
+.button-link {
+    background: none;
+}

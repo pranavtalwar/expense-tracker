@@ -53,8 +53,6 @@ const UserSchema: Schema = new mongoose.Schema ({
         default: 0
     },
     tokens: [tokenSchema]
-}, {
-    timestamps: true
 })
 
 UserSchema.virtual('expenses', {
