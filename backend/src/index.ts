@@ -1,7 +1,7 @@
 import { app } from './app'
 import http from 'http'
 
-const PORT: number = 5000
+const PORT: number = parseInt(process.env.PORT as string) | 5000
 const server = http.createServer(app)
 
 server.listen(PORT, () => {

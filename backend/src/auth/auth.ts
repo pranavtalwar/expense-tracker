@@ -1,19 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 import * as jwt from 'jsonwebtoken'
-// import  } from 'jsonwebtoken'
 import User from '../models/User'
 import { IUserDocument } from '../models/UserInterfaces'
-import { decode } from 'punycode'
-
-type tokenInterface = Object & {
-    _id: string
-}
-
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {  
         const token: string | undefined= req.headers.authorization?.replace('Bearer ', '')
-        console.log(token)
         let decodedToken: any
         if(typeof token === 'string') {
             decodedToken = jwt.verify(token, 'secret')
