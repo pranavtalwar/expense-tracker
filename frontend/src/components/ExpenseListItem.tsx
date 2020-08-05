@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Moment } from 'moment'
+import moment, { Moment } from 'moment'
+import numeral from 'numeral'
 
 interface Props {
     title: string,
@@ -11,13 +12,17 @@ interface Props {
 
 const ExpenseListItem:React.FC<Props> = ({ _id, title, amount, createdAt }: Props) => {
     const id: string  = _id
-    return (     
+    return (
+        <Link 
+            to={`/edit/${id}`}
+            className="list-item"
+        >
             <div>
-                <Link to={`/edit/${id}`}>
-                    <h3>{title}</h3>
-                </Link>
-                <p>{amount} - {createdAt}</p>
+                <h3 className="list-item-header">{title}</h3>
+                <span className="list-item-date">{moment(createdAt).format('MMMM Do, YYYY')}</span>
             </div>
+            <h3 className="list-item-amount">{numeral(amount).format('$0,0.00')}</h3>
+        </Link>
     ) 
 }
 

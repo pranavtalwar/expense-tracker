@@ -25,16 +25,25 @@ const ExpenseList: React.FC<Props> = ({ expenses, startSetExpenses }) => {
     }, [expenses.length, startSetExpenses])
 
     return (
-        <div>
-            <h1>Expense List</h1>
-            {expenses.length > 0 ? expenses.map((expense: Expense) => {
-                return <ExpenseListItem 
-                            key={expense._id}
-                            {...expense}
-                        />
-            }):
-            <p>No items</p>
-            }
+        <div className="content-container">
+            <div className="list-header">
+                <div className="show-for-mobile">Expenses</div>
+                <div className="show-for-desktop">Expense</div>
+                <div className="show-for-desktop">Amount</div>
+            </div>
+            <div className="list-body">
+                {
+                    expenses.length > 0 ? expenses.map((expense: Expense) => {
+                        return <ExpenseListItem 
+                                    key={expense._id}
+                                    {...expense}
+                                />
+                    }):
+                    <div className="list-item list-item-message">
+                        No expenses
+                    </div>
+                }
+             </div>
         </div>
     )
 }
