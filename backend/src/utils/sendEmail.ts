@@ -13,7 +13,7 @@ export const accountActivationEmail = (receiver: string, token: string) => {
         subject: 'Thanks for registering with Expense-Tracker',
         html: `
             <h2>Please click on this link to activate your account: </h2>
-            <p>${client_url}/activate/${token}</p> `
+            <p>${client_url}/activation-step-two/${token}</p> `
     })
 }
 

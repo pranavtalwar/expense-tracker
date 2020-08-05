@@ -28,8 +28,8 @@ router.post('/signup', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/activation', async (req: Request, res: Response) => {
-    const { token }: { token: string} = req.body
+router.post('/activation/:token', async (req: Request, res: Response) => {
+    const { token }: { token : string } = req.params as { token : string }
     try {
         if(token) {
             const decodedUser: IUserDocument = jwt.verify(token, process.env.JWT_SECRET as string) as IUserDocument
@@ -42,6 +42,7 @@ router.post('/activation', async (req: Request, res: Response) => {
             return res.status(201).send()
         }
     } catch(error) {
+        console.log(error)
         return res.status(400).send(error)
     }
     

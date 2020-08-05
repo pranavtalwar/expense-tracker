@@ -8,7 +8,8 @@ import EditExpense from '../components/EditExpense'
 import ExpenseDashboard from '../components/ExpenseDashboard'
 import NotFoundPage from '../components/NotFoundPage'
 import PrivateRoute from './PrivateRoute'
-import RegistrationStepOne from '../components/RegistrationStepOne'
+import ActivationStepOne from '../components/ActivationStepOne'
+import ActivationStepTwo from '../components/ActivationStepTwo'
 
 export const history = createHistory()
 
@@ -22,7 +23,8 @@ const AppRouter: React.FC = () => (
                     <PrivateRoute path="/dashboard" component={ExpenseDashboard}/>
                     <PrivateRoute path="/create" component={AddExpense}/>
                     <PrivateRoute path="/edit/:id" component={EditExpense}/>
-                    <Route path="/registration-step-one" component={RegistrationStepOne} exact={true}/>
+                    <Route path="/activation-step-one" component={ActivationStepOne} exact={true}/>
+                    <Route path="/activation-step-two/:token" component={ActivationStepTwo} exact={true}/>
                     <Route component={NotFoundPage}/>
                 </Switch>
             </div>

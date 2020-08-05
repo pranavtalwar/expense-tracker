@@ -21,7 +21,7 @@ const ExpenseListItem:React.FC<Props> = ({ _id, title, amount, createdAt }: Prop
                 <h3 className="list-item-header">{title}</h3>
                 <span className="list-item-date">{moment(createdAt).format('MMMM Do, YYYY')}</span>
             </div>
-            <h3 className="list-item-amount">{numeral(amount).format('$0,0.00')}</h3>
+            <h3 className="list-item-amount">{numeral(amount/100).format('$0,0.00')}</h3>
         </Link>
     ) 
 }

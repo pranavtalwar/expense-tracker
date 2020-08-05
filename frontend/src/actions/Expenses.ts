@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { AddExpenseAction, RemoveExpenseAction, UpdateExpenseAction, ExpenseUpdates, Expense, SetExpensesAction, ExpenseCreation } from '../reduxTypes/ExpenseTypes';
 import { Moment } from 'moment';
 import { Dispatch } from 'react';

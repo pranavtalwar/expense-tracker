@@ -110,7 +110,7 @@ export const startRegistration = ({ email, password, firstName, lastName, age }:
                 age
             })
             dispatch(registrationSuccess())
-            history.push('/registration-step-one')
+            history.push('/activation-step-one')
         } catch(error) {
             if(error.response.status === 403) {   
                 dispatch(registrationFailure('User already exists!'))
