@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import  Loader from 'react-loader';
-import Activation from './Activation'
+import InfoPage from './InfoPage'
 import { url } from '../constants'
 import { RouteComponentProps } from 'react-router-dom'
 
@@ -21,14 +22,12 @@ const ActivationStepTwo: React.FC<Props> = ({ match }) => {
         const activation = async() => {
             console.log('once')
             try {
-                const response = await axios.post(`${url}/activation/${token}`)
-                console.log(response)
+                const response: Response = await axios.post(`${url}/activation/${token}`)
                 setIsLoading(!isLoading)
                 if(response.status !== 201) {
                     throw new Error('' + response.status)
                 } 
             } catch(error) {
-                console.log(error.message)
                 setError(error.message)
             }      
         }
@@ -38,15 +37,21 @@ const ActivationStepTwo: React.FC<Props> = ({ match }) => {
     return (
         <Loader loaded={!isLoading}>
             {!error ?
-                <Activation 
-                    heading="Account activated!"
-                    textOne="Click to go back to the Login page to login with your credentials"
-                /> :
-                <Activation 
-                    heading="Error!"
-                    textOne="Looks like something went wrong"
-                    textTwo="The link sent to you might have expired"
-                />
+                <div>
+                    <InfoPage 
+                        heading="Account activated!"
+                        textOne="Click to go back to the Login page to login with your credentials"
+                    />
+                </div>
+                :
+                <div>
+                    <InfoPage 
+                        heading="Error!"
+                        textOne="Looks like something went wrong"
+                        textTwo="The link sent to you might have expired"
+                    />
+                </div>
+                
             }
         </Loader>
        

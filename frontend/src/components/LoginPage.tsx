@@ -1,4 +1,5 @@
 import React, { useState, Dispatch, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { startLogin, startUserLoad } from '../actions/Auth'
 import ErrorText from './ErrorText'
@@ -41,8 +42,8 @@ const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error
     }
 
     return (
-       <div className="login-page">
-            <div className="login-container">
+       <div className="main-page">
+            <div className="main-container">
                 <h1>Expense Tracker</h1>
                 <h3>Sign In</h3>
                 <form 
@@ -65,6 +66,10 @@ const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error
                     <ErrorText error={error} />
                     <button type="submit">Login</button>
                 </form>
+                <div className="redirect-links">
+                    <Link className="redirect-link" to="/forgot-password">Forgot Password?</Link>
+                    <Link className="redirect-link" to="/registration">Register</Link>
+                </div>
            </div>
        </div>
        

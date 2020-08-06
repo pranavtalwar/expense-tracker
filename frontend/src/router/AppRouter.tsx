@@ -10,6 +10,10 @@ import NotFoundPage from '../components/NotFoundPage'
 import PrivateRoute from './PrivateRoute'
 import ActivationStepOne from '../components/ActivationStepOne'
 import ActivationStepTwo from '../components/ActivationStepTwo'
+import ForgotPassword from '../components/ForgotPassword'
+import EmailSent from '../components/EmailSent'
+import PasswordChange from '../components/PasswordChange'
+import PasswordChanged from '../components/PasswordChanged'
 
 export const history = createHistory()
 
@@ -20,11 +24,15 @@ const AppRouter: React.FC = () => (
                 <Switch>
                     <Route path="/" component={Login} exact={true}/>
                     <Route path="/registration" component={Registration}/>
+                    <Route path="/activation-step-one" component={ActivationStepOne} exact={true}/>
+                    <Route path="/activation-step-two/:token" component={ActivationStepTwo} exact={true}/>
+                    <Route path="/forgot-password" component={ForgotPassword} />
+                    <Route path="/password-recovery/:token" component={PasswordChange} exact={true}/>
+                    <Route path="/password-changed" component={PasswordChanged} exact={true}/>
+                    <Route path='/email-sent' component={EmailSent} />
                     <PrivateRoute path="/dashboard" component={ExpenseDashboard}/>
                     <PrivateRoute path="/create" component={AddExpense}/>
                     <PrivateRoute path="/edit/:id" component={EditExpense}/>
-                    <Route path="/activation-step-one" component={ActivationStepOne} exact={true}/>
-                    <Route path="/activation-step-two/:token" component={ActivationStepTwo} exact={true}/>
                     <Route component={NotFoundPage}/>
                 </Switch>
             </div>

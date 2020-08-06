@@ -1,4 +1,5 @@
 import React, { useState, Dispatch } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { UserRegistration } from '../reduxTypes/AuthTypes'
 import { ReduxState } from '../reduxTypes/reduxStateType'
@@ -76,8 +77,8 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
     }
 
     return (
-        <div className="registration-page">
-            <div className="registration-container">
+        <div className="main-page">
+            <div className="main-container">
                 <h1>Expense Tracker</h1>
                 <h3>Registration</h3>
                 <form onSubmit={onSubmit}>
@@ -132,6 +133,10 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
                     <ErrorText error={error}/>
                     <button>Submit</button>
                 </form>
+                <div className="redirect-links">
+                    <Link className="redirect-link" to="/forgot-password">Forgot Password?</Link>
+                    <Link className="redirect-link" to="/">Login</Link>
+                </div>
             </div>
         </div>
     )

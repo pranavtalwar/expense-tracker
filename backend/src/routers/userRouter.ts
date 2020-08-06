@@ -1,9 +1,15 @@
 import express, { Router, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 import User from '../models/User'
 import { IUserDocument, IUser, IUserModel } from '../models/UserInterfaces'
 import auth from '../auth/auth'
-import { accountActivationEmail, welcomeEmail } from '../utils/sendEmail'
+import {
+    accountActivationEmail,
+    welcomeEmail,
+    passwordLostEmail,
+    passwordChangedEmail
+} from '../utils/sendEmail'
 
 const router: Router = express.Router()
 
@@ -83,6 +89,41 @@ router.post('/logoutAll', auth, async(req: Request, res: Response) => {
         await user.save()
         res.send()
     } catch(error) {
+        res.status(500).send()
+    }
+})
+
+router.post('/forgot-password', async (req: Request, res:Response) => {
+    const { email }: { email: string } = req.body
+    try {
+        const user: IUser | null = await User.findOne({ email })
+        if(user) {
+            const token: string =  jwt.sign({ _id: user._id }, process.env.JWT_SECRET as string, { expiresIn: '20m' })
+            passwordLostEmail(email, token)
+            return res.status(200).send()
+        }
+        return res.status(200).send()
+    } catch(error) {
+        res.status(500).send()
+    }
+})
+
+router.post('/change-password/:token', async (req: Request, res: Response) => {
+    const { token }: { token : string } = req.params as { token : string }
+    const { password } = req.body
+    try {
+        if(token) {
+            const { _id }: { _id: string } = jwt.verify(token, process.env.JWT_SECRET as string) as { _id: string}
+            const user: IUser | null = await User.findById(_id)
+            if(!user) {
+                return res.status(403).send()
+            }
+            const hashedPassword: string = await bcrypt.hash(password, 8)
+            await User.findByIdAndUpdate(_id, { password: hashedPassword })
+            passwordChangedEmail(user.email)
+            res.status(200).send()
+        }
+    }  catch(error) {
         res.status(500).send()
     }
 })

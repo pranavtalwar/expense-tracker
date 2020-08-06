@@ -64,7 +64,7 @@ UserSchema.virtual('expenses', {
 UserSchema.pre<IUserDocument>('save', async function (next: HookNextFunction): Promise<void> {
    const user: IUserDocument = this 
    if(user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8)
+       user.password = await bcrypt.hash(user.password, 8)
    }
    next()
 })

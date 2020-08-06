@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 interface Props {
     heading: string,
@@ -8,14 +9,14 @@ interface Props {
 
 const Activation: React.FC<Props> = ({ heading, textOne, textTwo }) => {
     return (
-        <div className="registration-page">
-            <div className="registration-container">
+        <div className="main-page">
+            <div className="main-container">
                 <h1>Expense Tracker</h1>
                 <h3>{heading}</h3>
-                <div className="registration-message"> 
+                <div className="main-message"> 
                     <p>{textOne}</p>
                     {textTwo && <p>{textTwo}</p>}
-                    <a className="registration-back-link" href="/">Back</a>
+                    <Link to="/" className="redirect-link">Back</Link>
                 </div>
             </div>
         </div>

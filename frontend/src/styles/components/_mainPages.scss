@@ -1,4 +1,4 @@
-.login-page {
+.main-page {
     align-items: center;
     background: url('/images/bg.jpg');
     background-size: cover;
@@ -8,7 +8,7 @@
     display: flex;
 }
 
-.login-container {
+.main-container {
     background: fade-out(white, .15);
     border-radius: 4px;
     text-align: center;
@@ -16,7 +16,11 @@
     width: 30rem;
 }
 
-.login-container input {
+.main-container form {
+    padding-bottom: $m-size;
+}
+
+.main-container input {
     width: 100%;
     margin-bottom: 20px;
     border: none;
@@ -26,21 +30,21 @@
     margin: 10px 0;
 }
 
-.login-container input:focus {
+.main-container input:focus {
     outline: none;
 }
 
-.login-container h1 {
+.main-container h1 {
     margin: 0 0 $m-size 0;
     line-height: 1;
 }
 
-.login-container h3 {
+.main-container h3 {
     margin: 0 0 $m-size 0;
     line-height: 1;
 }
 
-.login-container button {
+.main-container button {
     margin-top: 20px;
     border: none;
     background-color: $theme-color;
@@ -51,9 +55,25 @@
     cursor: pointer;
 }
 
-.login-container button:hover {
+.main-container button:hover {
     background-color: white;
     color:  $theme-color;
     outline: 4px solid $theme-color;
+}
+
+.redirect-link {
+    color: $theme-color;
+    text-decoration: none;
+}
+
+.redirect-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.main-message {	
+    padding-top: $s-size;	
+    font-size: $m-size;	
 }
 
