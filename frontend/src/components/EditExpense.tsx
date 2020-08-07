@@ -1,9 +1,10 @@
-import React, { Dispatch } from 'react'
+import React, { useState, Dispatch } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ReduxState } from '../reduxTypes/reduxStateType'
 import { Expense, ExpenseCreation, ExpenseUpdates } from '../reduxTypes/ExpenseTypes'
 import ExpenseForm from './ExpenseForm'
+import ConfirmationModal from './ConfirmationModal'
 import { startEditExpense , startRemoveExpense } from '../actions/Expenses'
 
 interface MatchParams {
@@ -23,6 +24,19 @@ interface Props extends RouteComponentProps<MatchParams>, StateProps, DispatchPr
 
 const EditExpense: React.FC<Props> = ({ expense, startEditExpense, startRemoveExpense, match, history }: Props) => {
     const { id }: { id: string } = match.params
+
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    const removeExpense = () => {
+        startRemoveExpense(id)
+        setIsOpen(false)
+        history.push('/')
+    }
+
+    const cancelRemoveExpense = () => {
+        setIsOpen(false)
+    }
+
     return (
         <div>
             <div className="page-header">
@@ -40,16 +54,18 @@ const EditExpense: React.FC<Props> = ({ expense, startEditExpense, startRemoveEx
                 />
                 <button
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        startRemoveExpense(id)
-                        history.push('/dashboard')
+                        setIsOpen(true)
                     }}
                     className="button button-secondary"
                 >   
                     Remove Expense
                 </button>
             </div>
-               
-            
+            <ConfirmationModal
+                isOpen={isOpen}
+                removeExpense={removeExpense}
+                cancelRemoveExpense={cancelRemoveExpense}
+            />
         </div>
     )
 }
