@@ -15,7 +15,7 @@ const router: Router = express.Router()
 
 // route for signing up a new user
 router.post('/signup', async (req: Request, res: Response) => {
-    const { email } : { email: string} = req.body
+    const { email } : { email: string } = req.body
     try {
 
         const checkUser: IUserDocument | null = await User.findOne({ email })
