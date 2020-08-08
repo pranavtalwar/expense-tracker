@@ -20,6 +20,9 @@ app.use(cors())
 app.use(morgan('tiny'))
 app.use(userRouter)
 app.use(expenseRouter)
+app.get('/hello', (req, res) => {
+    res.send('hello')
+})
 
 
 export { app }
