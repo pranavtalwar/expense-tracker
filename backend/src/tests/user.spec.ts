@@ -13,7 +13,6 @@ import {
 import { app } from '../app'
 import User from '../models/User'
 import { IUser } from '../models/UserInterfaces'
-import { token } from 'morgan'
 
 chai.use(chaiHttp)
 

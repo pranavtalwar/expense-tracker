@@ -79,6 +79,9 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, setError, remove
         e.preventDefault()
         if(validation(data)) {
             startRegistration(createRegistratonPostData(data))
+            setTimeout(() => {
+                removeError()
+            }, 3000)
         }
 
     }
