@@ -6,11 +6,14 @@ import {
     setupDatabase,
     destoryDatabase,
     userOne,
-    userOneID
+    userOneID,
+    userTwo,
+    userTwoID
 } from './fixtures/db'
 import { app } from '../app'
 import User from '../models/User'
 import { IUser } from '../models/UserInterfaces'
+import { token } from 'morgan'
 
 chai.use(chaiHttp)
 
@@ -127,6 +130,25 @@ describe('Testing users', (): void => {
         
         chai.expect(response.status).to.eql(200)
         const userSaved: IUser | null = await User.findById(userOneID)
+        chai.expect(userSaved?.tokens.length).to.eql(0)
+    })
+
+    it('Should return 401 if header is not provided', async (): Promise<void> => {
+        const response: ChaiHttp.Response = await chai
+            .request(app).post('/logout')
+            .send()
+        
+        chai.expect(response.status).to.eql(401)
+    })
+
+    it('Should delete all tokens if logout is used', async (): Promise<void> => {
+        const response: ChaiHttp.Response = await chai
+            .request(app).post('/logout')
+            .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+            .send()
+        
+        chai.expect(response.status).to.eql(200)
+        const userSaved: IUser | null = await User.findById(userTwoID)
         chai.expect(userSaved?.tokens.length).to.eql(0)
     })
 

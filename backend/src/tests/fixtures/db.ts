@@ -3,13 +3,17 @@ import * as jwt from 'jsonwebtoken'
 import User from '../../models/User'
 import Expense from '../../models/Expense'
 
+interface Token {
+    token: string
+}
+
 interface SignupUser {
     _id: mongoose.Types.ObjectId
     firstName: string
     lastName: string,
     email: string,
     password: string,
-    tokens: [{ token: string }]
+    tokens: Array<Token>
     age?:number
 }
 
@@ -35,6 +39,8 @@ const userTwo: SignupUser = {
     password: 'checking123',
     age: 30,
     tokens: [{
+        token: jwt.sign({ _id: userTwoID }, process.env.JWT_SECRET as string)
+    }, {
         token: jwt.sign({ _id: userTwoID }, process.env.JWT_SECRET as string)
     }]
 }
