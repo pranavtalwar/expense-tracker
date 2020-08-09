@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import  Loader from 'react-loader';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -25,11 +26,17 @@ const Profile: React.FC<Props> = ({ firstName, lastName, age, email }) => {
     const [image, setImage] = useState<string>('')
     const [isUploaded, setIsUploaded] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect (() => {
         const getProfileImage = async () => {
             const response = await axios.get(`${url}/users/me/avatar`, getAuthHeader())
-            setImage(response.data)
+            if(response.status === 200) {
+                setImage(response.data)
+                setIsLoading(!isLoading)
+                return
+            }
+            setIsLoading(!isLoading) 
         }
 
         getProfileImage()
@@ -66,79 +73,81 @@ const Profile: React.FC<Props> = ({ firstName, lastName, age, email }) => {
     }
 
     return (
-        <div>
-            <div className="page-header">
-                <div className="content-container">
-                    <h1 className="page-header-title">Profile</h1>
-                    <Link className="redirect-link profile-link" to="/editprofile">Edit Profile</Link>
+        <Loader loaded={!isLoading}>
+            <div>
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header-title">Profile</h1>
+                        <Link className="redirect-link profile-link" to="/editprofile">Edit Profile</Link>
+                    </div>
                 </div>
-            </div>
-            <div className="profile">
-                <div className="profile-card">
-                    <div className="profile-picture">
-                        {!image ?
-                            <img src={avatar}/>
-                            :
-                            <img 
-                                src={`data:image/jpeg;base64,${image}`}
+                <div className="profile">
+                    <div className="profile-card">
+                        <div className="profile-picture">
+                            {!image ?
+                                <img src={avatar}/>
+                                :
+                                <img 
+                                    src={`data:image/jpeg;base64,${image}`}
+                                />
+                            }
+                        </div>
+                        <label className="custom-file-upload">
+                            <input 
+                                type="file"
+                                accept="image/x-png,image/gif,image/jpeg"
+                                onChange={handleFileSelect}
                             />
-                        }
-                    </div>
-                    <label className="custom-file-upload">
-                        <input 
-                            type="file"
-                            accept="image/x-png,image/gif,image/jpeg"
-                            onChange={handleFileSelect}
-                        />
-                        Choose File
-                    </label>
-                    <button 
-                        className="button"
-                        onClick={handleFileUpload}
-                    >
-                        Upload Image
-                    </button>
-                    {selectedFile && <p>File Selected: {selectedFile.name}</p>}
-                    {error && <ErrorText error={error} />}
-                    <div className="profile-details">
-                        <table className="center">
-                            <tr>
-                                <td>
-                                    <h3>First Name:</h3>
-                                </td>
-                                <td>
-                                    <h3>{firstName}</h3>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h3>Last Name:</h3>
-                                </td>
-                                <td>
-                                    <h3>{lastName}</h3>
-                                </td>
-                            </tr>
-                            {age && <tr>
-                                <td>
-                                    <h3>Age:</h3>
-                                </td>
-                                <td>
-                                    <h3>{age}</h3>
-                                </td>
-                            </tr>}
-                            <tr>
-                                <td>
-                                    <h3>Email:</h3>
-                                </td>
-                                <td>
-                                    <h3>{email}</h3>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>    
-            </div>     
-        </div>
+                            Choose File
+                        </label>
+                        <button 
+                            className="button"
+                            onClick={handleFileUpload}
+                        >
+                            Upload Image
+                        </button>
+                        {selectedFile && <p>File Selected: {selectedFile.name}</p>}
+                        {error && <ErrorText error={error} />}
+                        <div className="profile-details">
+                            <table className="center">
+                                <tr>
+                                    <td>
+                                        <h3>First Name:</h3>
+                                    </td>
+                                    <td>
+                                        <h3>{firstName}</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h3>Last Name:</h3>
+                                    </td>
+                                    <td>
+                                        <h3>{lastName}</h3>
+                                    </td>
+                                </tr>
+                                {age && <tr>
+                                    <td>
+                                        <h3>Age:</h3>
+                                    </td>
+                                    <td>
+                                        <h3>{age}</h3>
+                                    </td>
+                                </tr>}
+                                <tr>
+                                    <td>
+                                        <h3>Email:</h3>
+                                    </td>
+                                    <td>
+                                        <h3>{email}</h3>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>    
+                </div>     
+            </div>
+        </Loader>
     )
 }
 
