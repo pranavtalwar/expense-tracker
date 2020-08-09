@@ -1,0 +1,29 @@
+.profile {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    
+}
+
+.profile img {
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+}
+
+.profile-details {
+    text-align: center;
+}
+
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.center tr{
+    text-align: left;
+}
+
+.center td{
+    padding-right: 20px;
+}

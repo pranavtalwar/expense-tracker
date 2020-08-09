@@ -14,6 +14,7 @@ import ForgotPassword from '../components/ForgotPassword'
 import EmailSent from '../components/EmailSent'
 import PasswordChange from '../components/PasswordChange'
 import PasswordChanged from '../components/PasswordChanged'
+import Profile from '../components/Profile'
 
 export const history = createHistory()
 
@@ -33,6 +34,7 @@ const AppRouter: React.FC = () => (
                     <PrivateRoute path="/dashboard" component={ExpenseDashboard}/>
                     <PrivateRoute path="/create" component={AddExpense}/>
                     <PrivateRoute path="/edit/:id" component={EditExpense}/>
+                    <PrivateRoute path="/profile" component={Profile} />
                     <Route component={NotFoundPage}/>
                 </Switch>
             </div>
