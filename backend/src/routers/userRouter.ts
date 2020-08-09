@@ -15,7 +15,7 @@ const router: Router = express.Router()
 
 // route for signing up a new user
 router.post('/signup', async (req: Request, res: Response) => {
-    const { email } : { email: string} = req.body
+    const { email } : { email: string } = req.body
     try {
 
         const checkUser: IUserDocument | null = await User.findOne({ email })
@@ -71,9 +71,7 @@ router.post('/logout', auth, async(req: Request, res: Response) => {
     const userToken: string = res.locals.token
 
     try {
-        user.tokens.filter((token: { token: string}) => {
-            token.token !== userToken
-        })
+        user.tokens = user.tokens.filter((token: { token: string}) => token.token !== userToken)
         await user.save()
         res.send()
     } catch(error) {

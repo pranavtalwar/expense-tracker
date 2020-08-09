@@ -1,4 +1,4 @@
-import { LoginAction, RegistrationAction, User } from '../reduxTypes/AuthTypes'
+import { LoginAction, RegistrationAction, User, ErrorAction } from '../reduxTypes/AuthTypes'
 import { history } from '../router/AppRouter'
 import { Dispatch } from "react"
 import axios from "axios"
@@ -119,3 +119,12 @@ export const startRegistration = ({ email, password, firstName, lastName, age }:
             }
         }
     }
+
+export const removeError = (): ErrorAction => ({
+    type: 'REMOVE_ERROR'
+})
+
+export const setError = (errorText: string): ErrorAction => ({
+    type: 'SET_ERROR',
+    errorText
+})

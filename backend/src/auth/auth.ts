@@ -8,7 +8,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
         const token: string | undefined= req.headers.authorization?.replace('Bearer ', '')
         let decodedToken: any
         if(typeof token === 'string') {
-            decodedToken = jwt.verify(token, 'secret')
+            decodedToken = jwt.verify(token, process.env.JWT_SECRET as string)
         } else {
             throw new Error()
         }

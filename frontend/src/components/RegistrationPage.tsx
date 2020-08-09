@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { UserRegistration } from '../reduxTypes/AuthTypes'
 import { ReduxState } from '../reduxTypes/reduxStateType'
-import { startRegistration } from '../actions/Auth'
+import { startRegistration, setError, removeError } from '../actions/Auth'
 import ErrorText from './ErrorText'
 
 interface RegistractionForm {
@@ -20,12 +20,14 @@ interface StateProps {
 }
 
 interface DispatchProps {
-    startRegistration: (userData: UserRegistration) => void
+    startRegistration: (userData: UserRegistration) => void,
+    setError: (errorText: string) => void,
+    removeError: () => void
 }
 
 interface Props extends DispatchProps, StateProps {}
 
-const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
+const RegistrationPage: React.FC<Props> = ({ startRegistration, setError, removeError, error }) => {
     const [data, setData] = useState<RegistractionForm>({
         firstName: '',
         lastName: '',
@@ -39,7 +41,12 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
         if (data.passwordOne === data.passwordTwo) {
             return true
         }
-        alert('Passwords don\'t match!')
+        console.log('here')
+        setError('Password do not match!')
+        setTimeout(() => {
+            removeError()
+        }, 3000)
+        
         return false 
     }
 
@@ -72,6 +79,9 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, error }) => {
         e.preventDefault()
         if(validation(data)) {
             startRegistration(createRegistratonPostData(data))
+            setTimeout(() => {
+                removeError()
+            }, 3000)
         }
 
     }
@@ -147,7 +157,9 @@ const mapStateToProps = (state: ReduxState): StateProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
-    startRegistration: (userData: UserRegistration) => dispatch(startRegistration(userData))
+    startRegistration: (userData: UserRegistration) => dispatch(startRegistration(userData)),
+    setError: (errorText: string) => dispatch(setError(errorText)),
+    removeError: () => dispatch(removeError())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage)

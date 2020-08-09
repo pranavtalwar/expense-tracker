@@ -71,6 +71,18 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
                     error: action.error
                 }   
             }
+        case 'REMOVE_ERROR':
+            return {
+                ...state,
+                error: undefined
+            }
+        case 'SET_ERROR':
+            if(action.errorText) {
+                return {
+                    ...state,
+                    error: action.errorText
+                }
+            }
         default:
             return state
     }

@@ -1,7 +1,7 @@
 import React, { useState, Dispatch, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { startLogin, startUserLoad } from '../actions/Auth'
+import { startLogin, startUserLoad, removeError } from '../actions/Auth'
 import ErrorText from './ErrorText'
 import { ReduxState } from '../reduxTypes/reduxStateType' 
 import { Redirect, RouteComponentProps } from 'react-router-dom'
@@ -14,12 +14,13 @@ interface StateProps {
 interface DispatchProps {
     startLogin: (email: string, password: string) => void
     startUserLoad: (token: string) => void
+    removeError: () => void
 }
 
 interface Props extends StateProps, DispatchProps, RouteComponentProps<any> {}
 
 
-const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error, isAuthenticated }) => {
+const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, removeError, history, error, isAuthenticated }) => {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
@@ -28,6 +29,9 @@ const LoginPage : React.FC<Props> = ({ startLogin, startUserLoad, history, error
         if(email !== '' && password !== '') {
           startLogin(email, password)      
         }
+        setTimeout(() => {
+            removeError()
+        }, 2000)
     }
 
     useEffect(() => {
@@ -83,7 +87,8 @@ const mapStateToProps = (state: ReduxState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
     startLogin: (email: string, password: string) => dispatch(startLogin({ email, password })),
-    startUserLoad: (token: string ) => dispatch(startUserLoad(token))
+    startUserLoad: (token: string ) => dispatch(startUserLoad(token)),
+    removeError: () => dispatch(removeError())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

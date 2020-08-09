@@ -21,6 +21,7 @@ export interface AuthAction {
     token?: string
     user?: User
     error?: string
+    errorText?: string
 }
 
 export interface LoginAction {
@@ -33,4 +34,9 @@ export interface LoginAction {
 export interface RegistrationAction {
     type: string
     error?: string
+}
+
+export interface ErrorAction {
+    type: string,
+    errorText?: string
 }
