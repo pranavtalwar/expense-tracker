@@ -48,6 +48,12 @@ const Header: React.FC<Props> = ({ startLogout }) => {
                             >
                                 Profile
                             </option>
+                            <option
+                                value="editprofile"
+                                className="menu-option"
+                            >
+                                Edit Profile
+                            </option>
                         </select>
                         <button className="button button-link" onClick={startLogout}>Logout</button>
                     </div>
