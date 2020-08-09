@@ -78,7 +78,7 @@ UserSchema.pre<IUserDocument>('remove', async function (next: HookNextFunction):
 
 UserSchema.method('generateToken', async function (this: IUserDocument): Promise<string> {
     const user: IUserDocument = this 
-    const token = jwt.sign({ _id: user._id.toString() }, 'secret')
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET as string)
     user.tokens = user.tokens.concat({ token })
     await user.save()
 

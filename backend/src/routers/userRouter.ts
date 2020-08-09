@@ -71,9 +71,7 @@ router.post('/logout', auth, async(req: Request, res: Response) => {
     const userToken: string = res.locals.token
 
     try {
-        user.tokens.filter((token: { token: string}) => {
-            token.token !== userToken
-        })
+        user.tokens = user.tokens.filter((token: { token: string}) => token.token !== userToken)
         await user.save()
         res.send()
     } catch(error) {

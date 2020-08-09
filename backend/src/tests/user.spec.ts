@@ -25,7 +25,7 @@ describe('Testing users', (): void => {
     })
 
     it('Should send an email to the person', async (): Promise<void> => {
-        const response = await chai
+        const response: ChaiHttp.Response = await chai
             .request(app).post('/signup')
             .send({
                 email: 'mike.jones@example.com',
@@ -37,7 +37,7 @@ describe('Testing users', (): void => {
     })
 
     it('Should not send an email to the person who already is a user', async (): Promise<void> => {
-        const response = await chai
+        const response: ChaiHttp.Response = await chai
             .request(app).post('/signup')
             .send({
                 email: userOne.email,
@@ -57,7 +57,7 @@ describe('Testing users', (): void => {
             password: 'testing123'
         }
         const token = jwt.sign(user, process.env.JWT_SECRET as string, { expiresIn: '20m' })
-        const response = await chai
+        const response: ChaiHttp.Response = await chai
             .request(app).post(`/activation/${token}`)
             .send()
         
@@ -76,7 +76,7 @@ describe('Testing users', (): void => {
             age: userOne.age
         }
         const token = jwt.sign(user, process.env.JWT_SECRET as string, { expiresIn: '20m' })
-        const response = await chai
+        const response: ChaiHttp.Response = await chai
             .request(app).post(`/activation/${token}`)
             .send()
         
@@ -84,7 +84,7 @@ describe('Testing users', (): void => {
     })
 
     it('Should login an exisiting user', async (): Promise<void> => {
-        const response = await chai
+        const response: ChaiHttp.Response = await chai
             .request(app).post('/login')
             .send({
                 email: userOne.email,
@@ -96,5 +96,40 @@ describe('Testing users', (): void => {
         const user: IUser | null = await User.findById(userOneID)
         chai.expect(response.body.token).to.eql(user?.tokens[1].token)
     })
+
+    it('Should not login a non existent user', async (): Promise<void> => {
+        const response: ChaiHttp.Response = await chai
+            .request(app).post('/login')
+            .send({
+                email: 'non.existent@example.com',
+                password: 'nonExistent'
+            })
+        
+        chai.expect(response.status).to.eql(400)
+    })
+
+    it('Should not login an existent user with wrong password', async (): Promise<void> => {
+        const response: ChaiHttp.Response = await chai
+            .request(app).post('/login')
+            .send({
+                email: userOne.email,
+                password: 'wrongPassword'
+            })
+        
+        chai.expect(response.status).to.eql(400)
+    })
+
+    it('Should logout a logged in user', async (): Promise<void> => {
+        const response: ChaiHttp.Response = await chai
+            .request(app).post('/logout')
+            .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+            .send()
+        
+        chai.expect(response.status).to.eql(200)
+        const userSaved: IUser | null = await User.findById(userOneID)
+        chai.expect(userSaved?.tokens.length).to.eql(0)
+    })
+
+
     
 })
