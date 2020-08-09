@@ -9,6 +9,7 @@ export interface IUserDocument extends Document, Object {
     tokens: {
         token: string
     }[],
+    avatar: Buffer
 }
 
 export interface IUser extends IUserDocument {

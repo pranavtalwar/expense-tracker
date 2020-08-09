@@ -52,7 +52,10 @@ const UserSchema: Schema = new mongoose.Schema ({
         type: Number,
         default: 0
     },
-    tokens: [tokenSchema]
+    tokens: [tokenSchema],
+    avatar: {
+        type: Buffer
+    }
 })
 
 UserSchema.virtual('expenses', {

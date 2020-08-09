@@ -1,6 +1,8 @@
 import express, { Router, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import sharp, { Sharp } from 'sharp'
+import multer from 'multer'
 import User from '../models/User'
 import { IUserDocument, IUser, IUserModel } from '../models/UserInterfaces'
 import auth from '../auth/auth'
@@ -10,6 +12,7 @@ import {
     passwordLostEmail,
     passwordChangedEmail
 } from '../utils/sendEmail'
+import { HookNextFunction } from 'mongoose'
 
 const router: Router = express.Router()
 
@@ -159,6 +162,52 @@ router.delete('/users/me', auth, async (req: Request, res: Response) => {
     } catch(error) {
         console.log(error)
         res.status(500).send()
+    }
+})
+
+const upload = multer({
+    limits: {
+        fileSize: 10000000
+    },
+    fileFilter(req: Request, file: Express.Multer.File, cb) {
+        if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            cb(new Error('Please upload an image with a jpg, jpeg or a png extension.'))
+        }
+        cb(null, true)
+    }
+})
+
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req: Request, res: Response) => {
+    console.log('here')
+    const buffer: Buffer = await sharp(req.file.buffer)
+        .resize({ width: 250 , height: 250 })
+        .png()
+        .toBuffer()
+    res.locals.user.avatar = buffer
+    await res.locals.user.save()
+    res.send()
+}, (err: Error, req: Request, res: Response, next: HookNextFunction) => {
+    res.status(400).send({ error: err.message })
+})
+
+router.delete('/users/me/avatar', auth, async (req: Request, res: Response) => {
+    res.locals.user.avatar = undefined
+    await res.locals.user.save()
+    res.send()
+})
+
+
+router.get('/users/me/avatar', auth, async (req, res) => {
+    try {
+        const avatar: Buffer = res.locals.user.avatar
+        console.log(typeof avatar)
+        if(!avatar) {
+            throw new Error()
+        }
+
+        res.send(avatar.toString('base64'))
+    } catch(e) {
+        res.status(404).send()
     }
 })
 

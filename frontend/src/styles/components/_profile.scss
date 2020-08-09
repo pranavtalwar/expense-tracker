@@ -31,3 +31,18 @@
 .profile-link {
     font-size: $font-size-large;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    cursor: pointer;
+    font-size: $font-size-large;
+    font-weight: 300;
+    line-height: 1;
+    padding: $s-size - 0.1;
+    text-decoration: none;
+}
