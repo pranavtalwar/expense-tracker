@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 import User from '../../models/User'
+import Expense from '../../models/Expense'
 
 interface SignupUser {
     _id: mongoose.Types.ObjectId
@@ -44,8 +45,14 @@ const setupDatabase = async () => {
     await new User(userTwo).save()
 }
 
+const destoryDatabase = async () => {
+    await User.deleteMany({})
+    await Expense.deleteMany({})
+}
+
 export {
     setupDatabase,
+    destoryDatabase,
     userOne,
     userOneID,
     userTwo,
