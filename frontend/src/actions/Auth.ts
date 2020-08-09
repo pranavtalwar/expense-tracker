@@ -1,4 +1,4 @@
-import { LoginAction, RegistrationAction, User, ErrorAction } from '../reduxTypes/AuthTypes'
+import { LoginAction, RegistrationAction, User, UserEdit, ErrorAction, EditAction } from '../reduxTypes/AuthTypes'
 import { history } from '../router/AppRouter'
 import { Dispatch } from "react"
 import axios from "axios"
@@ -43,7 +43,7 @@ export const startLogin = ({ email, password }: {email: string, password: string
         }
 }
 
-const logout = ():LoginAction => ({
+const logout = (): LoginAction => ({
     type: 'LOGOUT'
 })
 
@@ -102,7 +102,7 @@ interface UserRegistration extends User {
 export const startRegistration = ({ email, password, firstName, lastName, age }: UserRegistration) => 
     async (dispatch: Dispatch<any>): Promise<void> => {
         try {
-            await axios.post(`${url}/signup`, {
+            const response: Response = await axios.post(`${url}/signup`, {
                 email,
                 password,
                 firstName,
@@ -117,6 +117,40 @@ export const startRegistration = ({ email, password, firstName, lastName, age }:
             } else {
                 dispatch(registrationFailure('Server error!'))
             }
+        }
+    }
+
+interface UserEditResponse extends Response {
+    data : { 
+        firstName: string,
+        lastName: string,
+        age: number | null
+    }
+}
+
+const userEditSuccess =  (user: UserEdit): EditAction => ({
+    type: 'USER_EDIT_SUCCESS',
+    user
+})
+
+const userEditFailure = (): EditAction => ({
+    type: 'USER_EDIT_FAILURE',
+})
+
+export const startProfileEdit = ({ firstName, lastName, age}: UserEdit) =>
+    async (dispatch: Dispatch<any>): Promise<void> => {
+        try {
+            const response: UserEditResponse = await axios.patch(`${url}/users/me`, {
+                firstName,
+                lastName,
+                age
+            }, getAuthHeader())
+            if(response.status === 200) {
+                const updatedUser = response.data
+                dispatch(userEditSuccess(updatedUser))
+            }
+        } catch(error) {
+            dispatch(userEditFailure())
         }
     }
 

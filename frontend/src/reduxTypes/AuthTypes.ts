@@ -19,7 +19,7 @@ export interface UserRegistration extends User{
 export interface AuthAction {
     type: string
     token?: string
-    user?: User
+    user?: User,
     error?: string
     errorText?: string
 }
@@ -39,4 +39,15 @@ export interface RegistrationAction {
 export interface ErrorAction {
     type: string,
     errorText?: string
+}
+
+export interface EditAction {
+    type: string,
+    user?: UserEdit
+}
+
+export interface UserEdit {
+    firstName: string,
+    lastName: string,
+    age : number | null
 }

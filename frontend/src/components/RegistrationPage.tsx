@@ -72,9 +72,9 @@ const RegistrationPage: React.FC<Props> = ({ startRegistration, setError, remove
         const age: string = e.target.value
         if(!age || age.match(/^(100|[0-9]|[1-9][0-9])$/)) {
             setData({ ...data, age: age })
-        }
-        
+        }  
     }
+    
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault()
         if(validation(data)) {

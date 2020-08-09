@@ -134,7 +134,7 @@ router.get('/users/me', auth, async (req: Request, res:Response) => {
 
 router.patch('/users/me', auth, async (req: Request, res: Response) => {
     const updates: string[] = Object.keys(req.body)
-    const allowedUpdates: string[] = ['firstName', 'lastName', 'password', 'age']
+    const allowedUpdates: string[] = ['firstName', 'lastName', 'age']
     const isAllowed: boolean = updates.every((update: string) => allowedUpdates.includes(update))
 
     if(!isAllowed) {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import avatar from './avatar.png'
 import { ReduxState } from '../reduxTypes/reduxStateType'
@@ -19,6 +20,7 @@ const Profile: React.FC<Props> = ({ firstName, lastName, age, email }) => {
             <div className="page-header">
                 <div className="content-container">
                     <h1 className="page-header-title">Profile</h1>
+                    <Link className="redirect-link profile-link" to="/editprofile">Edit Profile</Link>
                 </div>
             </div>
             <div className="profile">

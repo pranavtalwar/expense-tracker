@@ -71,6 +71,20 @@ const authReducer = (state: Auth = authReducerDefaultState, action: AuthAction):
                     error: action.error
                 }   
             }
+        case 'USER_EDIT_SUCCESS':
+            if(action.user) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        ...action.user
+                    }
+                }
+            }
+        case 'USER_EDIT_FAILURE':
+            return {
+                ...state
+            }
         case 'REMOVE_ERROR':
             return {
                 ...state,

@@ -24,8 +24,12 @@ const Header: React.FC<Props> = ({ startLogout }) => {
                         <h1>Expense Tracker</h1>
                     </Link>
                     <div>
-                        <select className="menu" onChange={handleChange}>
-                            <option className="menu-option">Menu</option>
+                        <select defaultValue="Menu" className="menu" onChange={handleChange}>
+                            <option 
+                                className="menu-option"
+                            >
+                                Menu
+                            </option>
                             <option 
                                 className="menu-option"
                                 value="dashboard"
