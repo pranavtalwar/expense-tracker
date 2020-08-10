@@ -1,1 +1,1 @@
-# todo-app
+# expense-tracker
