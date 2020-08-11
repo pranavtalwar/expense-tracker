@@ -28,19 +28,23 @@ const Profile: React.FC<Props> = ({ firstName, lastName, age, email }) => {
     const [error, setError] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    useEffect (() => {
-        const getProfileImage = async () => {
+    const getProfileImage = async () => {
+        try {
             const response = await axios.get(`${url}/users/me/avatar`, getAuthHeader())
             if(response.status === 200) {
                 setImage(response.data)
-                setIsLoading(!isLoading)
+                setIsLoading(false)
                 return
             }
-            setIsLoading(!isLoading) 
+        } catch(error) {
+            setIsLoading(false)
         }
+        
+    }
 
+    useEffect (() => {
         getProfileImage()
-    }, [isUploaded])
+    }, [])
 
     
 
@@ -62,8 +66,10 @@ const Profile: React.FC<Props> = ({ firstName, lastName, age, email }) => {
             if(response.status === 200) {
                 setIsUploaded(true)
                 setSelectedFile(null)
+                await getProfileImage()
             }
         } catch(error) {
+            console.log('error')
             setSelectedFile(null)
             setError('Image could no be uploaded!')
             setTimeout(() => {
